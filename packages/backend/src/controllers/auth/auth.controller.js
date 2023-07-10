@@ -23,16 +23,14 @@ export async function login(req, res) {
     // Déterminer si le champ est un email ou un username
     const user = await (async () => {
       const loginField = get(req.body, 'login');
-      console.log(
-        '🚀 ~ file: auth.controller.js:26 ~ user ~ loginField:',
-        loginField
-      );
       if (includes(loginField, '@')) {
-        return await User.findOne({ email: req.body.login });
+        const getUserByHisEmail = await User.findOne({ email: req.body.login });
+        return getUserByHisEmail;
       }
-      return await User.findOne({ username: req.body.login });
+      const loginName = get(req.body, 'login');
+      const getUserByHisUsername = await User.findOne({ userName: loginName });
+      return getUserByHisUsername;
     })();
-    console.log('🚀 ~ file: auth.controller.js:35 ~ user ~ user:', user);
 
     if (!user) {
       return res.status(404).send('No user found.');
