@@ -39,6 +39,25 @@
 
               <q-item-section> Liste des recettes </q-item-section>
             </q-item>
+
+            <q-separator />
+
+            <q-item  clickable v-ripple to="/">
+              <q-item-section avatar>
+                <q-icon name="person"/>
+              </q-item-section>
+
+              <q-item-section> Se connecter </q-item-section>
+            </q-item>
+
+            <q-item  clickable v-ripple to="/">
+              <q-item-section avatar>
+                <q-icon name="logout"/>
+              </q-item-section>
+
+              <q-item-section> Déconnexion </q-item-section>
+            </q-item>
+
           </q-list>
         </q-scroll-area>
       </q-drawer>
