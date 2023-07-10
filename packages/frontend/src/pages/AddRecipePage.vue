@@ -1,21 +1,19 @@
 <template>
   <div>
+  
     <div class="text-h4">
-      Liste des recettes
+    Ajouter une recette
     </div>
     <p>
-   
     </p>
-  
+   
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
-
 
 export default {
-  name: "HomePage",
+  name: "AddRecipePage",
  
   setup() {
   
