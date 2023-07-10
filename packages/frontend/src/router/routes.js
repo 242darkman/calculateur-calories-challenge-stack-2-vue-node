@@ -16,6 +16,10 @@ const routes = [
         path: "add-recipe",
         component: () => import("src/pages/AddRecipePage.vue"),
       },
+      {
+        path: "add-ingredient",
+        component: () => import("src/pages/AddIngredient.vue"),
+      },
     ],
   },
 

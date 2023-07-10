@@ -33,7 +33,7 @@
           stack-label
           label="Multiple selection des ingredients"
         />
-        
+
         <div class="row justify-center q-mt-md">
           <q-btn
             :loading="loading"
@@ -52,7 +52,7 @@
   import { ref, computed  } from 'vue'
   export default {
   name: "AddRecipePage",
- 
+
   setup () {
     const ingredients = ref([])
     const options = [
@@ -79,8 +79,8 @@
       options,
       filterText,
       filterIngredients,
-      filteredOptions, 
-      enregistrer, 
+      filteredOptions,
+      enregistrer,
       loading
     }
   }
