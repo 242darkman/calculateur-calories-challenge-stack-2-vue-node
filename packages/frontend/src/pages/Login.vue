@@ -8,7 +8,6 @@
           v-model="username"
           label="Email ou Username"
           class="q-mt-md"
-          :rules="[(val) => validateEmail(val) || 'Email invalide']"
           lazy-rules
         />
         <q-input
@@ -26,12 +25,14 @@
             />
           </template>
         </q-input>
-        <q-btn
-          color="primary"
-          label="Se connecter"
-          class="q-mt-md"
-          @click="login"
-        />
+        <div class="row justify-center q-mt-md">
+          <q-btn
+            :loading="loading"
+            color="primary"
+            label="Se connecter"
+            @click="login"
+          />
+        </div>
       </q-card-section>
     </q-card>
   </q-page>
@@ -46,23 +47,22 @@ export default {
       username: "",
       password: "",
       showPassword: false,
+      loading: false,
     });
 
     function login() {
+      state.loading = true;
       console.log(`Username/Email: ${state.username}`);
       console.log(`Password: ${state.password}`);
-    }
-
-    function validateEmail(email) {
-      const re =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(String(email).toLowerCase());
+      // Simule une attente de réponse de l'API
+      setTimeout(() => {
+        state.loading = false;
+      }, 2000);
     }
 
     return {
       ...toRefs(state),
       login,
-      validateEmail,
     };
   },
 };
@@ -70,6 +70,6 @@ export default {
 
 <style scoped lang="scss">
 .q-card {
-  max-width: 50%;
+  max-width: 70%;
 }
 </style>
