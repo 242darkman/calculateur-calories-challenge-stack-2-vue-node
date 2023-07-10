@@ -9,10 +9,9 @@ const recipeSchema = new Schema({
     type: String,
     required: [true],
   },
-
   publication_date: {
-    type: String,
-    required: [true],
+    type: Date,
+    default: Date.now(),
   },
   ingredients: {
     type: Array,
