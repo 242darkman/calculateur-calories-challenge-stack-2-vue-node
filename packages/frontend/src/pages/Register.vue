@@ -1,5 +1,4 @@
 <template>
-    
     <form action="POST" class="form">
         <h3 class="text-center"> Création de compte </h3>
         <div>
@@ -26,7 +25,7 @@
          <div>
             <button type="submit"> Inscription</button>
         </div>
-        <p>Pas encore inscrit ici?</p>
+        <p>Déjà inscrit ici ?</p>
     </form>
 </template>
 <style>
