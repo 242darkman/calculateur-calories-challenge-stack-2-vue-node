@@ -1,0 +1,14 @@
+{
+  "name": "challenge-stack-vue-node",
+  "description": "Une application conçu avec différente technologies : Express Mongo pour le backend et Quasar pour le frontend",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "concurrently \"yarn workspace frontend start\" \"yarn workspace backend start\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}
