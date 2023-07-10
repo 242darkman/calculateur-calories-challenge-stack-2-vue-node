@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import SubmitButton from "../components/SubmitButton.vue";
 
   import { ref, computed  } from 'vue'
   export default {
@@ -85,6 +87,9 @@
     }
   }
 };
+
+
+
 </script>
 <style scoped lang="scss">
     .q-card {
