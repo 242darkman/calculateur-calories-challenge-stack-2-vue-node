@@ -70,6 +70,6 @@ export default {
 
 <style scoped lang="scss">
 .q-card {
-  max-width: 50%;
+  max-width: 70%;
 }
 </style>
