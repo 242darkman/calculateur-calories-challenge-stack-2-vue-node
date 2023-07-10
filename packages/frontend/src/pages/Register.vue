@@ -1,68 +1,92 @@
 <template>
-    <form action="POST" class="form">
-        <h3 class="text-center"> Création de compte </h3>
-        <div>
-            <label class="form-control">Firstname :</label>
-            <input type="text" name="Firstname">
+  <q-page class="flex flex-center">
+    <q-card class="full-width">
+      <q-card-section>
+        <div class="text-h6">Inscription</div>
+        <q-input
+          outlined
+          v-model="firstname"
+          label="Firstname"
+          class="q-mt-md"
+          lazy-rules
+        />
+         <q-input
+          outlined
+          v-model="lastname"
+          label="Lastname"
+          class="q-mt-md"
+          lazy-rules
+        />
+        <q-input
+          outlined
+          v-model="username"
+          label="Username"
+          class="q-mt-md"
+          lazy-rules
+        />
+        <q-input
+          outlined
+          v-model="email"
+          label="Email"
+          class="q-mt-md"
+          lazy-rules
+        />
+        <q-input
+          outlined
+          v-model="password"
+          :type="showPassword ? 'text' : 'password'"
+          label="Mot de passe"
+          class="q-mt-md"
+        >
+          <template v-slot:append>
+            <q-icon
+              :name="showPassword ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="showPassword = !showPassword"
+            />
+          </template>
+        </q-input>
+        <div class="row justify-center q-mt-md">
+          <q-btn
+            :loading="loading"
+            color="primary"
+            label="Se connecter"
+            @click="login"
+          />
         </div>
-        <div>
-            <label >Lastname :</label>
-            <input type="text" name="lastname">
+         <div class="row justify-center q-mt-md">
+            <p> <router-link to="/login">Déja inscript ? cliquez ici</router-link> </p>
         </div>
-        <div>
-            <label >Username :</label>
-            <input type="text" name="username">
-        </div>
-        <div>
-            <label for="mail">E-mail :</label>
-            <input type="email" name="email">
-        </div>
-        <div>
-            <label for="mail">Password :</label>
-            <input type="password"  name="password">
-        </div>
-
-         <div>
-            <button type="submit"> Inscription</button>
-        </div>
-        <p>Déjà inscrit ici ?</p>
-    </form>
+        
+      </q-card-section>
+    </q-card>
+  </q-page>
 </template>
-<style>
-    .form{
-        background: white;
-        width: 800px;
-        margin: 60px auto;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 100px;
-        box-shadow: 0 0 10px #cdd2cd;
+<script>
+    import { toRefs, reactive } from "vue";
+
+    export default {
+        setup() {
+            const state = reactive({
+            firstname: "",
+            lastname: "",
+            username: "",
+            email: "",
+            password: "",
+            showPassword: false,
+            loading: false,
+            });
+        
+        return {
+            ...toRefs(state),
+        }
     }
-    .form div{
-        margin-top: 10px;
-        margin-bottom: 15px;
-    }
-    label{
-        font-size: 20px; 
-        margin-right: 60px;
-        margin-left: 25px;
-        display: block;
-    }
-    input{
-        font-size: 25px;
-        width: 500px;
-        margin-left: 25px;
-        border-radius: 5px;
-    }
-    button{
-        font-size: 20px;
-        border-radius: 5px;
-        width: 140px;
-        height: 40px;
-        background: #1976d2;
-        color: white;
+};
+</script>
+
+
+<style scoped lang="scss">
+    .q-card {
+    max-width: 60%;
     }
 </style>
