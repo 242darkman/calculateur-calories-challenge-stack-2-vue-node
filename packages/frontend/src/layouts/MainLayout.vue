@@ -27,14 +27,14 @@
           <q-list padding>
             <q-item clickable v-ripple to="/add-recipe">
               <q-item-section avatar>
-                <q-icon name="add"/>
+                <q-icon name="add" />
               </q-item-section>
               <q-item-section> Nouvelle recette </q-item-section>
             </q-item>
 
-            <q-item  clickable v-ripple to="/">
+            <q-item clickable v-ripple to="/">
               <q-item-section avatar>
-                <q-icon name="list"/>
+                <q-icon name="list" />
               </q-item-section>
 
               <q-item-section> Liste des recettes </q-item-section>
@@ -42,22 +42,44 @@
 
             <q-separator />
 
-            <q-item  clickable v-ripple to="/">
+            <q-item
+              v-if="!authStore.isUserAuthenticated"
+              clickable
+              v-ripple
+              to="/login"
+            >
               <q-item-section avatar>
-                <q-icon name="person"/>
+                <q-icon name="person" />
               </q-item-section>
 
               <q-item-section> Se connecter </q-item-section>
             </q-item>
 
-            <q-item  clickable v-ripple to="/">
+            <q-item
+              v-if="authStore.isUserAuthenticated"
+              clickable
+              v-ripple
+              @click="getProfile"
+            >
               <q-item-section avatar>
-                <q-icon name="logout"/>
+                <q-icon name="person" />
+              </q-item-section>
+
+              <q-item-section> Mon profil </q-item-section>
+            </q-item>
+
+            <q-item
+              v-if="authStore.isUserAuthenticated"
+              clickable
+              v-ripple
+              @click="logout"
+            >
+              <q-item-section avatar>
+                <q-icon name="logout" />
               </q-item-section>
 
               <q-item-section> Déconnexion </q-item-section>
             </q-item>
-
           </q-list>
         </q-scroll-area>
       </q-drawer>
@@ -72,14 +94,42 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { toRefs, reactive, onMounted } from "vue";
+import { useAuthStore } from "../stores/auth/auth.store.js";
+import { useRouter } from "vue-router";
 
 export default {
   name: "MainLayout",
   setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
+    const state = reactive({
+      drawer: false,
+      miniState: true,
+      isAuthenticated: authStore.IS_USER_AUTHENTICATED,
+    });
+
+    async function logout() {
+      try {
+        await authStore.logout();
+        router.push("/");
+      } catch (error) {
+        console.error("Erreur lors de la déconnexion :", error);
+      }
+    }
+
+    function getProfile() {
+      router.push("/profile");
+    }
+
+    onMounted(() => {
+      authStore.checkAuthentication();
+    });
     return {
-      drawer: ref(false),
-      miniState: ref(true),
+      ...toRefs(state),
+      authStore,
+      logout,
+      getProfile,
     };
   },
 };
