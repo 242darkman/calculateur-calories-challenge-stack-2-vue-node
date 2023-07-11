@@ -5,7 +5,7 @@
         <div class="text-h6">Connexion</div>
         <q-input
           outlined
-          v-model="username"
+          v-model="loginName"
           label="Email ou Username"
           class="q-mt-md"
           lazy-rules
@@ -33,6 +33,14 @@
             @click="login"
           />
         </div>
+        <div class="row justify-center q-mt-md">
+          <q-btn
+            color="primary"
+            label="Vous n'avez pas de compte? S'inscrire"
+            @click="goToRegister"
+            flat
+          />
+        </div>
       </q-card-section>
     </q-card>
   </q-page>
@@ -40,29 +48,44 @@
 
 <script>
 import { toRefs, reactive } from "vue";
+import { useAuthStore } from "../../stores/auth/auth.store.js";
+import { useRouter } from "vue-router";
 
 export default {
+  name: "Login",
   setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
     const state = reactive({
-      username: "",
+      loginName: "",
       password: "",
       showPassword: false,
       loading: false,
     });
 
-    function login() {
+    async function login() {
       state.loading = true;
-      console.log(`Username/Email: ${state.username}`);
-      console.log(`Password: ${state.password}`);
-      // Simule une attente de réponse de l'API
-      setTimeout(() => {
+      try {
+        await authStore.login({
+          loginName: state.loginName,
+          password: state.password,
+        });
+        router.push("/");
+      } catch (error) {
+        console.error(error);
+      } finally {
         state.loading = false;
-      }, 2000);
+      }
+    }
+
+    function goToRegister() {
+      router.push("/register");
     }
 
     return {
       ...toRefs(state),
       login,
+      goToRegister,
     };
   },
 };
