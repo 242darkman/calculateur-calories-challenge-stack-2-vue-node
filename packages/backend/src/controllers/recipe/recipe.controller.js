@@ -1,3 +1,4 @@
+import IngredientReferentiel from '../../models/ingredient/ingredientReferentiel.model.js';
 import Recipe from '../../models/recipe/recipe.model.js';
 import get from 'lodash/get.js';
 import isUndefined from 'lodash/isUndefined.js';
