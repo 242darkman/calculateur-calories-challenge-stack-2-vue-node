@@ -124,6 +124,22 @@ export async function checkRefreshToken(refreshToken) {
   return refreshTokenFromDB.userId;
 }
 
+export async function logout(req, res) {
+  try {
+    const token = req.headers['cookie'];
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'No token provided.' });
+    }
+
+    res.clearCookie('access_token');
+    return res.status(200).send({ auth: false, token: null });
+  } catch (err) {
+    return res.status(500).send('There was a problem logging out.');
+  }
+}
+
 export async function assignRole(req, res) {
   const { userId, role } = req.body;
 
