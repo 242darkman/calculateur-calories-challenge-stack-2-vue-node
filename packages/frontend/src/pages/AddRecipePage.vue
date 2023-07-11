@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import SubmitButton from "../components/SubmitButton.vue";
 
   import { ref, computed  } from 'vue'
   export default {
@@ -87,14 +86,13 @@ import SubmitButton from "../components/SubmitButton.vue";
   }
 };
 
-
-
 </script>
 <style scoped lang="scss">
     .q-card {
     max-width: 60%;
     }
     h4{
+      text-align: center;
       margin-bottom: 0px;
       margin-top: 2px;
     }
