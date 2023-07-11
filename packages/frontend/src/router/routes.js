@@ -3,10 +3,11 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", component: () => import("src/pages/HomePage.vue") },
       {
-        path: "Register",
-        component: () => import("src/pages/Register.vue"),
+        path: "",
+        name: "home",
+        component: () => import("src/pages/home/HomePage.vue"),
+      },
       },
       {
         path: "login",
@@ -14,7 +15,8 @@ const routes = [
       },
       {
         path: "add-recipe",
-        component: () => import("src/pages/AddRecipePage.vue"),
+        component: () => import("src/pages/recipes/AddRecipePage.vue"),
+        meta: { requiresAuth: true },
       },
     ],
   },
