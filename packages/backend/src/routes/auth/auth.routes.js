@@ -1,4 +1,9 @@
-import { login, me, register } from '../../controllers/auth/auth.controller.js';
+import {
+  login,
+  logout,
+  me,
+  register,
+} from '../../controllers/auth/auth.controller.js';
 
 import express from 'express';
 
@@ -117,5 +122,43 @@ router.post('/auth/login', login);
  *     description: Bearer token authorization header
  */
 router.get('/auth/me', me);
+
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     tags:
+ *       - Auth
+ *     summary: Logout the user from the application
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: User logged out successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 auth:
+ *                   type: boolean
+ *                   description: Indicates if the user is authenticated.
+ *                   example: false
+ *                 token:
+ *                   type: null
+ *                   description: Null value indicating no token.
+ *       '400':
+ *         description: Invalid request
+ *       '401':
+ *         description: Unauthorized - User not authenticated
+ *
+ * securityDefinitions:
+ *   bearerAuth:
+ *     type: apiKey
+ *     name: Authorization
+ *     in: header
+ *     description: Bearer token authorization header
+ */
+router.post('/auth/logout', logout);
 
 export default router;
