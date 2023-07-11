@@ -49,19 +49,30 @@ export async function login(req, res) {
       expiresIn: 86400,
     });
 
-    return res.status(200).send({ auth: true, token: token });
+    res.cookie('access_token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: true,
+    });
+
+    return res.status(200).send({ auth: true });
   } catch (err) {
     return res.status(500).send('There was a problem logging in.');
   }
 }
 
 export async function me(req, res) {
-  const token = req.headers['x-access-token'];
+  const cookies = req.headers['cookie'];
+  const token = cookies
+    .split(';')
+    .find((cookie) => cookie.trim().startsWith('access_token='));
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' });
   }
 
-  jwt.verify(token, process.env.SECRET, async function (err, decoded) {
+  const accessToken = token.split('=')[1].trim();
+
+  jwt.verify(accessToken, process.env.SECRET, async function (err, decoded) {
     if (err)
       return res
         .status(500)
