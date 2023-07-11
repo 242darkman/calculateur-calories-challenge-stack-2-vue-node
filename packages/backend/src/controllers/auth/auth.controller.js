@@ -22,13 +22,14 @@ export async function login(req, res) {
   try {
     // Déterminer si le champ est un email ou un username
     const user = await (async () => {
-      const loginField = get(req.body, 'login');
+      const loginField = get(req.body, 'loginName');
       if (includes(loginField, '@')) {
-        const getUserByHisEmail = await User.findOne({ email: req.body.login });
+        const email = get(req.body, 'loginName');
+        const getUserByHisEmail = await User.findOne({ email });
         return getUserByHisEmail;
       }
-      const loginName = get(req.body, 'login');
-      const getUserByHisUsername = await User.findOne({ userName: loginName });
+      const userName = get(req.body, 'loginName');
+      const getUserByHisUsername = await User.findOne({ userName });
       return getUserByHisUsername;
     })();
 
@@ -41,7 +42,7 @@ export async function login(req, res) {
     const passwordIsValid = bcrypt.compareSync(password, userHashPassword);
 
     if (!passwordIsValid) {
-      return res.status(401).send({ auth: false, token: null });
+      return res.status(401).send({ auth: false });
     }
 
     const token = jwt.sign({ id: user._id }, process.env.SECRET, {
