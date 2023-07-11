@@ -1,4 +1,5 @@
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import express from 'express';
 import loadRoutes from './src/utils/routes.loader.js';
 import morgan from 'morgan';
@@ -7,6 +8,14 @@ import swaggerDocs from './src/utils/swagger.js';
 import swaggerUI from 'swagger-ui-express';
 
 const app = express();
+
+var corsOptions = {
+  origin: 'http://localhost:8080',
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 /**
  * @ express.json()

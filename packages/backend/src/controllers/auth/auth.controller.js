@@ -22,13 +22,14 @@ export async function login(req, res) {
   try {
     // Déterminer si le champ est un email ou un username
     const user = await (async () => {
-      const loginField = get(req.body, 'login');
+      const loginField = get(req.body, 'loginName');
       if (includes(loginField, '@')) {
-        const getUserByHisEmail = await User.findOne({ email: req.body.login });
+        const email = get(req.body, 'loginName');
+        const getUserByHisEmail = await User.findOne({ email });
         return getUserByHisEmail;
       }
-      const loginName = get(req.body, 'login');
-      const getUserByHisUsername = await User.findOne({ userName: loginName });
+      const userName = get(req.body, 'loginName');
+      const getUserByHisUsername = await User.findOne({ userName });
       return getUserByHisUsername;
     })();
 
@@ -41,26 +42,37 @@ export async function login(req, res) {
     const passwordIsValid = bcrypt.compareSync(password, userHashPassword);
 
     if (!passwordIsValid) {
-      return res.status(401).send({ auth: false, token: null });
+      return res.status(401).send({ auth: false });
     }
 
     const token = jwt.sign({ id: user._id }, process.env.SECRET, {
       expiresIn: 86400,
     });
 
-    return res.status(200).send({ auth: true, token: token });
+    res.cookie('access_token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: true,
+    });
+
+    return res.status(200).send({ auth: true });
   } catch (err) {
     return res.status(500).send('There was a problem logging in.');
   }
 }
 
 export async function me(req, res) {
-  const token = req.headers['x-access-token'];
+  const cookies = req.headers['cookie'];
+  const token = cookies
+    .split(';')
+    .find((cookie) => cookie.trim().startsWith('access_token='));
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' });
   }
 
-  jwt.verify(token, process.env.SECRET, async function (err, decoded) {
+  const accessToken = token.split('=')[1].trim();
+
+  jwt.verify(accessToken, process.env.SECRET, async function (err, decoded) {
     if (err)
       return res
         .status(500)
@@ -110,6 +122,22 @@ export async function checkRefreshToken(refreshToken) {
   }
 
   return refreshTokenFromDB.userId;
+}
+
+export async function logout(req, res) {
+  try {
+    const token = req.headers['cookie'];
+    if (!token) {
+      return res
+        .status(401)
+        .send({ auth: false, message: 'No token provided.' });
+    }
+
+    res.clearCookie('access_token');
+    return res.status(200).send({ auth: false, token: null });
+  } catch (err) {
+    return res.status(500).send('There was a problem logging out.');
+  }
 }
 
 export async function assignRole(req, res) {
