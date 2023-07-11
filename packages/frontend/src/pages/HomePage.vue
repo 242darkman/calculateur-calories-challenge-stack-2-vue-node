@@ -1,28 +1,27 @@
 <template>
-  <div>
-    <div class="text-h4">
-      Liste des recettes
+   <div class="text-h4 q-mb-lg">
+    Liste des recettes
     </div>
-    <p>
-   
-    </p>
-  
+    
+  <div class="q-pa-md">
+    <RecipeComponent/>
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
 
+<script>
+import RecipeComponent from "../components/RecipeComponent.vue";
 
 export default {
-  name: "HomePage",
- 
-  setup() {
-  
-    return {
-      
-    };
+  components: {
+    RecipeComponent,
   },
-};
+  name: "HomePage",
+  setup () {
+    return {
+     
+    }
+  }
+}
 </script>
 <style></style>
