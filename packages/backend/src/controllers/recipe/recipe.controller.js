@@ -16,6 +16,23 @@ export async function getRecipes(req, res) {
 }
 
 /**
+ * Récupérer un seul recipe
+ */
+export async function getRecipe(req, res) {
+  const { id } = req.params;
+
+  try {
+    const recipe = await Recipe.findById(id);
+    if (isNull(recipe) || isUndefined(recipe)) {
+      return res.status(404).json({ error: 'Recipe not found' });
+    }
+    res.status(200).json(recipe);
+  } catch (error) {
+    res.status(500).json({ error: error.toString() });
+  }
+}
+
+/**
  * création de la recette
  */
 export async function createRecipe(req, res) {
@@ -47,7 +64,7 @@ export async function updateRecipe(req, res) {
 
   try {
     const recipe = await Recipe.findById(id);
-    if (!recipe) {
+    if (isNull(recipe) || isUndefined(recipe)) {
       return res.status(404).json({ error: 'Recipe not found' });
     }
 
