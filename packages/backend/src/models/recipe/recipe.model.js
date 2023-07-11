@@ -2,7 +2,6 @@ import { Schema, mongoose } from 'mongoose';
 
 import Ingredient from '../ingredient/ingredient.model.js';
 import Step from '../step/step.model.js';
-import ingredientReferentiel from '../ingredient/ingredientReferentiel.model.js';
 
 const recipeSchema = new Schema({
   title: {
