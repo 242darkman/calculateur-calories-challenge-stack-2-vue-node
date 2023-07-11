@@ -1,16 +1,15 @@
 import { Schema, mongoose } from 'mongoose';
-import Step from '../step/step.model.js';
+
 import Ingredient from '../ingredient/ingredient.model.js';
+import Step from '../step/step.model.js';
+
 const recipeSchema = new Schema({
   title: {
     type: String,
     required: [true],
   },
 
-  author: {
-    type: String,
-    required: [true],
-  },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   publication_date: {
     type: Date,
     default: Date.now(),
