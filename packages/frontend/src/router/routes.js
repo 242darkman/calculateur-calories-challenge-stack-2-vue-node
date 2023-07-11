@@ -8,10 +8,29 @@ const routes = [
         name: "home",
         component: () => import("src/pages/home/HomePage.vue"),
       },
+      {
+        path: "register",
+        name: "register",
+        component: () => import("src/pages/auth/Register.vue"),
+        beforeEnter: (to, from, next) => {
+          if (!localStorage.getItem("access_token")) {
+            next();
+          } else {
+            next({ name: "home" });
+          }
+        },
       },
       {
         path: "login",
-        component: () => import("src/pages/Login.vue"),
+        name: "login",
+        component: () => import("src/pages/auth/Login.vue"),
+        beforeEnter: (to, from, next) => {
+          if (!localStorage.getItem("access_token")) {
+            next();
+          } else {
+            next({ name: "home" });
+          }
+        },
       },
       {
         path: "add-recipe",
