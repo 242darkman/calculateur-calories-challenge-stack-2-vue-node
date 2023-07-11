@@ -6,12 +6,12 @@ const ingredientRefentielSchema = new Schema({
   },
 
   calories: {
-    type: Number,
+    type: mongoose.Types.Decimal128,
     required: [true],
   },
 
   proteines: {
-    type: Number,
+    type: mongoose.Types.Decimal128,
     required: [true],
   },
 });

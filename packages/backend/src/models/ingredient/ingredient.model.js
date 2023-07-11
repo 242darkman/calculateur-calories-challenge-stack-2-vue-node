@@ -1,15 +1,12 @@
 import { Schema, mongoose } from 'mongoose';
-import IngredientRefentiel from './ingredientRefentiel.modele.js';
+import IngredientRefentiel from './ingredientRefentiel.model.js';
 const ingredientSchema = new Schema({
-  // name: {
-  //   type: String,
-  //   required: [true],
-  // },
-
-  name: {
-    type: [IngredientRefentiel.schema],
-    required: [true, 'IngredientRefentiel are required'],
-  },
+  ingredient: [
+    {
+      type: [IngredientRefentiel.schema],
+      required: [true, 'IngredientRefentiel are required'],
+    },
+  ],
 
   quantity: {
     type: Number,

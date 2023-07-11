@@ -23,14 +23,6 @@ const recipeSchema = new Schema({
     type: [Step.schema],
     required: [true, 'Steps are required'],
   },
-  // ingredients: {
-  //   type: Array,
-  //   required: [true],
-  // },
-  // steps: {
-  //   type: Array,
-  //   required: [true],
-  // },
 });
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
