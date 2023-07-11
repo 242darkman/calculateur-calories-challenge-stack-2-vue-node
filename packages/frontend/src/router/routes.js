@@ -43,6 +43,10 @@ const routes = [
         component: () => import("src/pages/recipes/AddRecipePage.vue"),
         meta: { requiresAuth: true },
       },
+      {
+        path: "add-ingredient",
+        component: () => import("src/pages/AddIngredient.vue"),
+      },
     ],
   },
 

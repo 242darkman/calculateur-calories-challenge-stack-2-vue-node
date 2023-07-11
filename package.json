@@ -9,6 +9,8 @@
     "start": "concurrently \"yarn workspace frontend start\" \"yarn workspace backend start\""
   },
   "devDependencies": {
+    "@babel/core": "^7.22.8",
+    "@babel/eslint-parser": "^7.22.7",
     "concurrently": "^8.2.0"
   }
 }

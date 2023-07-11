@@ -40,6 +40,14 @@
               <q-item-section> Liste des recettes </q-item-section>
             </q-item>
 
+            <q-item  clickable v-ripple to="/add-ingredient">
+              <q-item-section avatar>
+                <q-icon name="add"/>
+              </q-item-section>
+
+              <q-item-section> Ajouter des ingrédients </q-item-section>
+            </q-item>
+
             <q-separator />
 
             <q-item
