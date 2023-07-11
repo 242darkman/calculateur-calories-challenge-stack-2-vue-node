@@ -19,7 +19,7 @@ export async function getUsers(req, res, next) {
 /**
  * récupération d'un utilisateur
  */
-export async function getUser(req, res, next) {
+export async function getUser(req, res) {
   const id = get(req.params, 'id');
   try {
     const user = await User.findById(id);
