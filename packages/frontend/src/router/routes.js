@@ -52,11 +52,27 @@ const routes = [
         path: "add-ingredient",
         component: () => import("src/pages/AddIngredient.vue"),
       },
+      {
+        path: "ingredient-referentiel",
+        name: "ingredientReferentiel",
+        component: () =>
+          import("src/pages/ingredientReferentiel/ingredientReferentiel.vue"),
+      },
+      {
+        path: "edit-referentiel/:id",
+        name: "editReferentiel",
+        component: () =>
+          import("src/pages/ingredientReferentiel/editReferentiel.vue"),
+      },
+      {
+        path: "create-referentiel",
+        name: "createReferentiel",
+        component: () =>
+          import("src/pages/ingredientReferentiel/createReferentiel.vue"),
+      },
     ],
   },
 
-  // Always leave this as last one,
-  // but you can also remove it
   {
     path: "/:catchAll(.*)*",
     component: () => import("pages/Error404.vue"),

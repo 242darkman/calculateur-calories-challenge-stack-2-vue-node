@@ -77,3 +77,15 @@ export async function deleteIngredientReferentiel(req, res) {
     return res.status(400).json({ error: error.toString() });
   }
 }
+
+/**Recup à partir de l'id */
+export async function getReferentiel(req, res) {
+  const id = get(req.params, 'id');
+  try {
+    const referentiel = await IngredientRefentiel.findById(id);
+    if (isNull(referentiel) || isUndefined(referentiel)) {
+      res.status(404).json({ error: 'User not found' });
+    }
+    res.status(200).json(referentiel);
+  } catch (error) {}
+}
