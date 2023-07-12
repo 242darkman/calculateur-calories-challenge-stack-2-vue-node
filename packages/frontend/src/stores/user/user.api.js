@@ -1,7 +1,7 @@
 import { api } from "src/boot/axios.js";
 
 export async function deleteUser({ id }) {
-  const uri = `users/${id}`;
+  const uri = `user/${id}`;
   try {
     const response = await api.delete(uri);
     return response;
