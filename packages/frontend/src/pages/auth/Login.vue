@@ -3,20 +3,20 @@
     <q-card class="full-width">
       <q-card-section>
         <div class="text-h6">Connexion</div>
-        <q-input
-          outlined
-          v-model="loginName"
-          label="Email ou Username"
-          class="q-mt-md"
-          lazy-rules
-        />
-        <q-input
-          outlined
-          v-model="password"
-          :type="showPassword ? 'text' : 'password'"
-          label="Mot de passe"
-          class="q-mt-md"
-        >
+          <q-input
+            outlined
+            v-model="loginName"
+            label="Email ou Username"
+            class="q-mt-md"
+            lazy-rules
+          />
+          <q-input
+            outlined
+            v-model="password"
+            :type="showPassword ? 'text' : 'password'"
+            label="Mot de passe"
+            class="q-mt-md"
+          >
           <template v-slot:append>
             <q-icon
               :name="showPassword ? 'visibility_off' : 'visibility'"
