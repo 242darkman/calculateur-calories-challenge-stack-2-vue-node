@@ -27,7 +27,37 @@
         class="bg-light-blue-8 text-white row justify-between"
         style="gap: 15px"
       >
-        <div class="text-h6">{{ recipe?.title }}</div>
+        <div v-if="!editMode" class="text-h6">{{ recipe?.title }}</div>
+        <q-input
+          v-else
+          filled
+          v-model="recipe.title"
+          class="text-h6 full-width"
+        ></q-input>
+
+        <div class="row justify-end">
+          <q-btn
+            flat
+            icon="edit"
+            @click="editMode = true"
+            color="white"
+            v-if="!editMode"
+          ></q-btn>
+          <q-btn
+            flat
+            icon="save"
+            @click="saveChanges"
+            color="white"
+            v-if="editMode"
+          ></q-btn>
+          <q-btn
+            flat
+            icon="cancel"
+            @click="editMode = false"
+            color="white"
+            v-if="editMode"
+          ></q-btn>
+        </div>
 
         <q-btn flat icon="more_vert">
           <q-menu>
@@ -124,6 +154,7 @@ export default {
       confirm: false,
       recipe: null,
       isAnalyzed: false,
+      editMode: false,
       recipeTotalCalories: 0,
       owner: null,
     });
