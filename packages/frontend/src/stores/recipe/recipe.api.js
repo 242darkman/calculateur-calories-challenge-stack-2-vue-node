@@ -9,3 +9,13 @@ export async function createRecipe({ title, author, ingredients, steps }) {
     console.error("Erreur lors de la création de la recette :", error);
   }
 }
+
+export async function getRecipes() {
+  try {
+    const response = await api.get("/recipes");
+    const recipes = response.data;
+    return recipes;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des recettes :", error);
+  }
+}

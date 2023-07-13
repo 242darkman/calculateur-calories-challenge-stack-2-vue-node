@@ -1,4 +1,5 @@
-import { createRecipe } from "src/stores/recipe/recipe.api.js";
+import { createRecipe, getRecipes } from "src/stores/recipe/recipe.api.js";
+
 import { defineStore } from "pinia";
 
 const getters = {
@@ -12,6 +13,17 @@ const actions = {
       return data;
     } catch (error) {
       console.error("Erreur lors de la création de la recette :", error);
+      throw error;
+    }
+  },
+
+  async getRecipes() {
+    try {
+      const recipes = await getRecipes();
+      this.recipes = recipes;
+      return recipes;
+    } catch (error) {
+      console.error("Erreur lors de la récupération des recettes :", error);
       throw error;
     }
   },
