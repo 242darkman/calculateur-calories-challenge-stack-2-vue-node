@@ -19,3 +19,25 @@ export async function getRecipes() {
     console.error("Erreur lors de la récupération des recettes :", error);
   }
 }
+
+export async function getRecipe({ id }) {
+  try {
+    const uri = `/recipe/${id}`;
+    const response = await api.get(uri);
+    const recipe = response.data;
+    return recipe;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des recettes :", error);
+  }
+}
+
+export async function getRecipeCalories({ recipeId }) {
+  try {
+    const uri = `/recipe/${recipeId}/analyze`;
+    const response = await api.get(uri);
+    const recipeCalories = response.data;
+    return recipeCalories;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des recettes :", error);
+  }
+}
