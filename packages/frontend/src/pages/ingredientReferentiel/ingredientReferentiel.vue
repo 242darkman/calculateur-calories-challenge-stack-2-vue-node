@@ -20,7 +20,7 @@
           {{ col.value }}
         </q-td>
 
-        <q-td
+        <q-td v-if="authStore.isUserAuthenticated"
           ><q-btn
             class="q-mr-sm"
             color="red"
@@ -28,9 +28,8 @@
             icon="delete"
             @click="confirmDelete(props.row)"
         /></q-td>
-        <q-td
-          > 
-          <q-btn
+        <q-td v-if="authStore.isUserAuthenticated"
+          ><q-btn
             class="q-mr-sm"
             color="blue"
             text-color="white"
@@ -44,11 +43,13 @@
 <script>
     import { onBeforeMount, toRefs, reactive } from "vue";
     import { useIngredientReferentielStore } from "../../stores/ingredientReferentiel/ingredientReferentiel.store.js";
+    import { useAuthStore } from "../../stores/auth/auth.store.js";
     import { useRouter } from "vue-router";
 
     export default {
         name: "ingredientReferentiel",
         setup() {
+            const authStore = useAuthStore();
             const router = useRouter();
             const columns = [
                 {
@@ -73,9 +74,13 @@
                 },
             ];
             const ingredientReferentielStore = useIngredientReferentielStore();
+            
             const state = reactive({
                 ingredientReferentiels: [],
                 filter: "",
+                drawer: false,
+                miniState: true,
+                isAuthenticated: authStore.IS_USER_AUTHENTICATED,
             });  
             
             function redirectToEdit (idReferentiel) {
@@ -108,12 +113,14 @@
             onBeforeMount(async () => {
                 const ingredientReferentiels = await ingredientReferentielStore.getIngredientReferentiels();
                 state.ingredientReferentiels = ingredientReferentiels;
+                authStore.checkAuthentication();
             });
             return {
                 ...toRefs(state),
                 columns,
                 redirectToEdit,
                 confirmDelete,
+                authStore
             };
         }
     }
