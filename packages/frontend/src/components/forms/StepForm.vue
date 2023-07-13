@@ -124,7 +124,7 @@ export default {
   .step-item {
     display: flex;
     flex-direction: row;
-    align-items: start;
+    align-items: flex-start;
     justify-content: space-between;
 
     h3 {
