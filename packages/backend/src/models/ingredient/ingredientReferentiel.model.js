@@ -1,5 +1,6 @@
 import { Schema, mongoose } from 'mongoose';
-const ingredientRefentielSchema = new Schema({
+
+const ingredientReferentielSchema = new Schema({
   name: {
     type: String,
     required: [true],
@@ -16,8 +17,8 @@ const ingredientRefentielSchema = new Schema({
   },
 });
 
-const IngredientRefentiel = mongoose.model(
-  'IngredientRefentiel',
-  ingredientRefentielSchema
+const IngredientReferentiel = mongoose.model(
+  'IngredientReferentiel',
+  ingredientReferentielSchema
 );
-export default IngredientRefentiel;
+export default IngredientReferentiel;

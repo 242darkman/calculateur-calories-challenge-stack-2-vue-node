@@ -36,11 +36,11 @@ router.get('/users', getUsers);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /api/user/{id}:
  *   get:
  *     tags:
  *      - User
- *     summary: Get a user by ID
+ *     summary: Get a specific user
  *     parameters:
  *       - in: path
  *         name: id
@@ -60,15 +60,15 @@ router.get('/users', getUsers);
  *       '404':
  *         description: User not found
  */
-router.get('/users/:id', getUser);
+router.get('/user/:id', getUser);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /api/user/{id}:
  *   put:
  *     tags:
  *      - User
- *     summary: Update a user by ID
+ *     summary: Update a specific user
  *     parameters:
  *       - in: path
  *         name: id
@@ -91,15 +91,15 @@ router.get('/users/:id', getUser);
  *       '404':
  *         description: User not found
  */
-router.put('/users/:id', updateUser);
+router.put('/user/:id', updateUser);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /api/user/{id}:
  *   delete:
  *     tags:
  *      - User
- *     summary: Delete a user by ID
+ *     summary: Delete a specific user
  *     parameters:
  *       - in: path
  *         name: id
@@ -115,11 +115,11 @@ router.put('/users/:id', updateUser);
  *       '404':
  *         description: User not found
  */
-router.delete('/users/:id', deleteUser);
+router.delete('/user/:id', deleteUser);
 
 /**
  * @swagger
- * /api/users:
+ * /api/user:
  *   post:
  *     tags:
  *      - User
@@ -137,7 +137,7 @@ router.delete('/users/:id', deleteUser);
  *         description: Invalid request
  */
 router.post(
-  '/users',
+  '/user',
   [
     body('userName').notEmpty().withMessage('User name is required'),
     body('firstName').notEmpty().withMessage('First name is required'),

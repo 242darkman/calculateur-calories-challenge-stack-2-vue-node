@@ -3,7 +3,7 @@ import { Schema, mongoose } from 'mongoose';
 const ingredientSchema = new Schema({
   ingredient: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'IngredientRefentiel',
+    ref: 'IngredientReferentiel',
     required: true,
   },
 
