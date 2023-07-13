@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-page">
+  <div class="profile-page" id="p1">
     <h2>Profil de l'utilisateur</h2>
     <q-card class="profile-card">
       <q-card-section class="info-header"> Mes informations </q-card-section>
@@ -55,24 +55,89 @@
           label="Supprimer le compte"
           @click="confirmDelete"
         />
+        <q-btn
+          class="update-account"
+          color="primary"
+          label="modifier"
+          @click="onClick"
+        />
       </q-card-section>
     </q-card>
+  </div>
+  <div class="hidden" id="form2">
+    <h2>modification d'informations</h2>
+  <q-form class="profile-card" method = "POST" @submit.prevent="submitForm">
+      <q-card-section  class="q-gutter-md">
+        <q-input
+          outlined
+          v-model="firstName"
+          label="Prénom"
+          class="q-mt-md"
+          :rules="[(val) => !!val || 'This field is required']"
+        />
+        <q-input
+          outlined
+          v-model="lastName"
+          label="Nom"
+          class="q-mt-md"
+          :rules="[(val) => !!val || 'This field is required']"
+        />
+        <q-input
+          outlined
+          v-model="userName"
+          label="Nom d'utilisateur"
+          class="q-mt-md"
+          :rules="[(val) => !!val || 'This field is required']"
+        />
+        <q-input
+          outlined
+          v-model="email"
+          name = "email"
+          type="email"
+          label="E-mail"
+          class="q-mt-md"
+          :rules="[
+            (val) => !!val || 'This field is required',
+            (val) => validateEmail(val) || 'Invalid email',
+          ]"
+        />
+        <div class="row justify-center q-mt-md">
+          <q-btn
+            :loading="loading"
+            color="primary"
+            label="Enregistrer"
+            class="update-btn"
+            @click="updateUser"
+          />
+        </div>
+      </q-card-section>
+    </q-form>
   </div>
 </template>
 
 <script>
-import { onBeforeMount, toRefs, reactive } from "vue";
+import { onBeforeMount, toRefs, reactive, ref } from "vue";
 import { useAuthStore } from "../../stores/auth/auth.store.js";
 import { useUserStore } from "../../stores/user/user.store.js";
+import { deleteUser, updateUser } from "src/stores/user/user.api.js";
 import { useRouter } from "vue-router";
 import get from "lodash/get.js";
 
 export default {
   name: "UserProfile",
+  methods: {submitForm (){
+      alert('Formulaire envoyé !')
+    }},
   setup() {
     const authStore = useAuthStore();
     const userStore = useUserStore();
     const router = useRouter();
+    const lastName = ref("");
+    const firstName = ref("");
+    const userName = ref("");
+    const email = ref("");
+    const test = ref("");
+    const user = authStore.GET_USER;
     const state = reactive({
       user: {},
     });
@@ -102,6 +167,34 @@ export default {
       }
     }
 
+    async function onClick(){
+      var element = document.getElementById("form2");
+      let p1 = document.getElementById("p1");
+
+      addEventListener("mouseover", () => {p1.style.display = "none";});
+      element.classList.remove("hidden");
+    }
+
+    async function updateUser(){
+      try {
+        console.log(user);
+               const userId = get(user, "_id");
+                const data = {
+                lastName: lastName.value,
+                firstName: firstName.value,
+                userName: userName.value,
+                email: email.value,
+                }
+                await userStore.updateUser({id: userId}, user);
+                console.log(data);
+                window.alert("Utilisateur modifié!");
+               router.push("/");
+            } catch (error) {
+              console.error("lors de la modification des données :", error);
+              throw error;
+            }
+    }
+
     onBeforeMount(async () => {
       const user = await authStore.me();
       state.user = user;
@@ -110,6 +203,13 @@ export default {
     return {
       ...toRefs(state),
       confirmDelete,
+      updateUser,
+      onClick,
+      userName,
+      lastName,
+      firstName,
+      email,
+      test
     };
   },
 };
@@ -140,6 +240,7 @@ export default {
     font-weight: bold;
     color: #333;
     margin-bottom: 1em;
+    text-align: center;
   }
 
   .info-list {
@@ -160,9 +261,27 @@ export default {
     padding: 0.5em 1em;
     border-radius: 4px;
     cursor: pointer;
-    width: 100%;
+    width: 50%;
+    margin-left: 30px;
     font-size: 1.2em;
   }
+
+  .update-account {
+    margin-top: 1em;
+    color: #fff;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 30%;
+    margin-left: 40px;
+    font-size: 1.2em;
+  }
+
+  #form2{
+    text-align: center;
+  }
+
 }
 
 /* Make the page responsive for devices with smaller screens */

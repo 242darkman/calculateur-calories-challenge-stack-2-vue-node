@@ -32,6 +32,7 @@ export async function login(req, res) {
       const getUserByHisUsername = await User.findOne({ userName });
       return getUserByHisUsername;
     })();
+    console.log('user =' + user);
 
     if (!user) {
       return res.status(404).send('No user found.');
@@ -48,6 +49,7 @@ export async function login(req, res) {
     const token = jwt.sign({ id: user._id }, process.env.SECRET, {
       expiresIn: 86400,
     });
+    console.log('token =' + token);
 
     res.cookie('access_token', token, {
       httpOnly: true,
@@ -63,6 +65,7 @@ export async function login(req, res) {
 
 export async function me(req, res) {
   const cookies = req.headers['cookie'];
+  console.log(cookies);
   const token = cookies
     .split(';')
     .find((cookie) => cookie.trim().startsWith('access_token='));

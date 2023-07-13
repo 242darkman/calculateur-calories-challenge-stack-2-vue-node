@@ -1,4 +1,4 @@
-import { deleteUser, getUser } from "src/stores/user/user.api.js";
+import { deleteUser, getUser, updateUser } from "src/stores/user/user.api.js";
 
 import { defineStore } from "pinia";
 
@@ -21,6 +21,16 @@ const actions = {
       return user;
     } catch (error) {
       console.error("Erreur lors de la récupération de l'utilisateur :", error);
+      throw error;
+    }
+  },
+
+  async updateUser({ id }, userData) {
+    try {
+      const user = await updateUser({ id }, userData);
+      return user;
+    } catch (error) {
+      console.error("Erreur lors de la modification de l'utilisateur :", error);
       throw error;
     }
   },
