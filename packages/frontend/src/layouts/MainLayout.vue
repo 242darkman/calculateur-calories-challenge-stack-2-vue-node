@@ -25,27 +25,41 @@
       >
         <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
           <q-list padding>
-            <q-item clickable v-ripple to="/add-recipe">
+
+            <q-item
+              v-if="authStore.isUserAuthenticated"
+              clickable v-ripple to="/add-recipe"
+            >
               <q-item-section avatar>
                 <q-icon name="add" />
               </q-item-section>
+
               <q-item-section> Nouvelle recette </q-item-section>
+            </q-item>
+
+            <q-item
+              v-if="authStore.isUserAuthenticated"
+              clickable v-ripple to="/create-referentiel"
+            >
+              <q-item-section avatar>
+                <q-icon name="add" />
+              </q-item-section>
+
+              <q-item-section> Nouvel ingrédient </q-item-section>
             </q-item>
 
             <q-item clickable v-ripple to="/">
               <q-item-section avatar>
                 <q-icon name="list" />
               </q-item-section>
-
               <q-item-section> Liste des recettes </q-item-section>
             </q-item>
 
-            <q-item  clickable v-ripple to="/add-ingredient">
+            <q-item clickable v-ripple to="/ingredient-referentiel">
               <q-item-section avatar>
-                <q-icon name="add"/>
+                <q-icon name="list" />
               </q-item-section>
-
-              <q-item-section> Ajouter des ingrédients </q-item-section>
+              <q-item-section> Liste des référentiels </q-item-section>
             </q-item>
 
             <q-separator />
