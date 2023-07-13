@@ -125,9 +125,9 @@ export async function getRecipeCalories(req, res) {
 }
 
 /**
- * Méthode pour récupérer le JSON
+ * export d'une recette au format json
  */
-export async function exportRecipe(req, res) {
+export async function exportSingleRecipeAsJson(req, res) {
   const { id } = req.params;
 
   try {
