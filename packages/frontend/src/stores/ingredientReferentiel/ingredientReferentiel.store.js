@@ -4,7 +4,6 @@ import {
   update,
   create,
   deleteReferentiel,
-  getExport,
 } from "src/stores/ingredientReferentiel/ingredientReferentiel.api.js";
 import { defineStore } from "pinia";
 
@@ -67,16 +66,6 @@ const actions = {
       return data;
     } catch (error) {
       console.error("erreur de la suppression id:", error);
-      throw error;
-    }
-  },
-
-  async getExportData({ id }) {
-    try {
-      const data = await getExport({ id });
-      return data;
-    } catch (error) {
-      console.error("erreur de la récupération par id:", error);
       throw error;
     }
   },

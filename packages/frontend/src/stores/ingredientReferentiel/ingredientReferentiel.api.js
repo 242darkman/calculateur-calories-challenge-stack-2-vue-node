@@ -61,17 +61,3 @@ export async function deleteReferentiel({ id }) {
     console.error("Erreur lors de la suppression :", error);
   }
 }
-
-export async function getExport({ id }) {
-  try {
-    const uri = `export/${id}`;
-    const response = await api.get(uri);
-    const ingredient = response.data;
-    return ingredient;
-  } catch (error) {
-    console.error(
-      "Erreur lors de la récupération des informations sur les référentiels :",
-      error
-    );
-  }
-}

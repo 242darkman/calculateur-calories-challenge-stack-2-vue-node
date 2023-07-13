@@ -69,7 +69,7 @@ export async function me(req, res) {
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' });
   }
-
+  console.log('la valeur est : ' + req.headers);
   const accessToken = token.split('=')[1].trim();
 
   jwt.verify(accessToken, process.env.SECRET, async function (err, decoded) {

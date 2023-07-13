@@ -5,6 +5,7 @@ import {
   getRecipeCalories,
   getRecipes,
   updateRecipe,
+  exportRecipe,
 } from '../../controllers/recipe/recipe.controller.js';
 
 import express from 'express';
@@ -112,5 +113,7 @@ router.put('/recipe/:id', updateRecipe);
  *         description: Successfully deleted
  */
 router.delete('/recipe/:id', deleteRecipe);
+
+router.get('/recipe/:id/export', exportRecipe);
 
 export default router;

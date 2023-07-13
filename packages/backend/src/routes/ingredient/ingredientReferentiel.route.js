@@ -1,7 +1,6 @@
 import {
   createIngredientReferentiel,
   deleteIngredientReferentiel,
-  exportIngredient,
   getIngredientReferentiels,
   getReferentiel,
   updateIngredientReferentiel,
@@ -73,8 +72,6 @@ router.get('/ingredientReferentiels', getIngredientReferentiels);
  *         description: Something went wrong
  */
 router.get('/ingredientReferentiel/:id', getReferentiel);
-
-router.get('/export/:id', exportIngredient);
 
 router.put('/ingredientReferentiel/:id', updateIngredientReferentiel);
 
