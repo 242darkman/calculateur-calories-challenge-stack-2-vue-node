@@ -1,21 +1,32 @@
 <template>
     <div>
 <q-card class="my-card q-pb-lg q-mb-xl">
-    <q-card-section class="bg-light-blue-8 text-white row items-start" style="gap:15px">
+    <q-card-section class="bg-light-blue-8 text-white row justify-between" style="gap:15px">
       <div class="text-h6">Recette 1</div>
-      <q-btn
-          unelevated
-          color="bg-light-blue-8"
-          icon="edit"
-        ></q-btn>
-        <q-btn
-          unelevated
-          color="bg-light-blue-8"
-          @click="confirm = true"
-          icon="delete"
-        ></q-btn>
-       
-    <q-dialog v-model="confirm" persistent>
+
+    <q-btn flat   icon="more_vert">
+        <q-menu>
+          <q-list style="min-width: 100px">
+            <q-item clickable v-close-popup>
+              <q-item-section>Modifier</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup>
+              <q-item-section>Analyser</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup>
+              <q-item-section>Exporter en JSON</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup>
+              <q-item-section>Exporter en CSV</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup @click="confirm = true">
+              <q-item-section>Supprimer</q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </q-btn>
+
+      <q-dialog v-model="confirm" persistent>
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="warning" color="primary" text-color="white" />
@@ -35,7 +46,6 @@
      <p class="q-pa-sm ingredient" >Oeufs - 2</p>
     </q-card-section>
    
-  
     <q-list bordered separator>
     <q-item v-ripple class="q-pa-md">
       <q-item-section>

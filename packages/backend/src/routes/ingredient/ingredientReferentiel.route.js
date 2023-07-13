@@ -3,6 +3,9 @@ import {
   deleteIngredientReferentiel,
   getIngredientReferentiels,
   updateIngredientReferentiel,
+  deleteIngredientReferentiel,
+  getReferentiel,
+  exportIngredient,
 } from '../../controllers/ingredient/ingredientReferentiel.controller.js';
 
 import express from 'express';
@@ -70,6 +73,10 @@ router.get('/ingredientReferentiels', getIngredientReferentiels);
  *       500:
  *         description: Something went wrong
  */
+router.get('/ingredientReferentiel/:id', getReferentiel);
+
+router.get('/export/:id', exportIngredient);
+
 router.put('/ingredientReferentiel/:id', updateIngredientReferentiel);
 
 /**
