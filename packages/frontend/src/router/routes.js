@@ -49,10 +49,6 @@ const routes = [
         meta: { requiresAuth: true },
       },
       {
-        path: "add-ingredient",
-        component: () => import("src/pages/AddIngredient.vue"),
-      },
-      {
         path: "ingredient-referentiel",
         name: "ingredientReferentiel",
         component: () =>

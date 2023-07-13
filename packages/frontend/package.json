@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
-  "productName": "Mon template Quasar",
+  "productName": "Calculateur de calories",
   "private": true,
   "scripts": {
     "start": "quasar dev",

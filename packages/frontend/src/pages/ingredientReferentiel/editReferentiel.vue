@@ -1,5 +1,11 @@
 <template>
-  <router-link to="/ingredient-referentiel">Liste</router-link>
+  
+  <q-btn class="q-mb-lg" id="btn"
+    to="/ingredient-referentiel"
+    unelevated
+    color="light-blue-8"
+    icon="arrow_back"
+  ></q-btn>
 
   <q-page class="flex flex-center">
     <q-card class="full-width">
@@ -138,6 +144,9 @@ export default({
     font-size: 20px;
     width: 200px;
     height: 60px;
+  }
+  #btn{
+    margin-bottom: -15px;
   }
 </style>
 
