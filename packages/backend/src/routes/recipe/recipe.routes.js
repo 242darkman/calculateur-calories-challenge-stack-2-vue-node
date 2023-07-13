@@ -54,7 +54,7 @@ router.get('/recipes', getRecipes);
  *       200:
  *         description: A single recipe
  */
-router.get('/recipe', getRecipe);
+router.get('/recipe/:id', getRecipe);
 
 /**
  * @swagger
