@@ -1,9 +1,8 @@
 import IngredientReferentiel from '../../models/ingredient/ingredientReferentiel.model.js';
+import fs from 'fs';
 import get from 'lodash/get.js';
 import isNull from 'lodash/isNull.js';
 import isUndefined from 'lodash/isUndefined.js';
-import IngredientRefentiel from '../../models/ingredient/ingredientRefentiel.model.js';
-import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
@@ -92,7 +91,7 @@ export async function deleteIngredientReferentiel(req, res) {
 export async function getReferentiel(req, res) {
   const id = get(req.params, 'id');
   try {
-    const referentiel = await IngredientRefentiel.findById(id);
+    const referentiel = await IngredientReferentiel.findById(id);
     if (isNull(referentiel) || isUndefined(referentiel)) {
       res.status(404).json({ error: 'User not found' });
     }
@@ -107,7 +106,7 @@ export async function exportIngredient(req, res) {
   const { id } = req.params;
 
   try {
-    const ingredient = await IngredientRefentiel.findById(id);
+    const ingredient = await IngredientReferentiel.findById(id);
     if (!ingredient) {
       return res.status(404).json({ error: 'ingredient not found' });
     }

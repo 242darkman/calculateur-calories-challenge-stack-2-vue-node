@@ -1,9 +1,9 @@
 import IngredientReferentiel from '../../models/ingredient/ingredientReferentiel.model.js';
 import Recipe from '../../models/recipe/recipe.model.js';
+import fs from 'fs';
 import get from 'lodash/get.js';
 import isNull from 'lodash/isNull.js';
 import isUndefined from 'lodash/isUndefined.js';
-import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
@@ -124,6 +124,7 @@ export async function getRecipeCalories(req, res) {
   }
 }
 
+/**
  * Méthode pour récupérer le JSON
  */
 // export async function exportRecipe(req, res) {
@@ -206,4 +207,3 @@ export async function getRecipeCalories(req, res) {
 //     res.status(500).json({ error: error.toString() });
 //   }
 // }
-

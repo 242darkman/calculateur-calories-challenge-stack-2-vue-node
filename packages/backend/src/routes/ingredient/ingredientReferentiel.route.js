@@ -1,11 +1,10 @@
 import {
   createIngredientReferentiel,
   deleteIngredientReferentiel,
-  getIngredientReferentiels,
-  updateIngredientReferentiel,
-  deleteIngredientReferentiel,
-  getReferentiel,
   exportIngredient,
+  getIngredientReferentiels,
+  getReferentiel,
+  updateIngredientReferentiel,
 } from '../../controllers/ingredient/ingredientReferentiel.controller.js';
 
 import express from 'express';
