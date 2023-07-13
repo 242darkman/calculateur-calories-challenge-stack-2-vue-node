@@ -1,5 +1,6 @@
 import {
   createRecipe,
+  deleteRecipe,
   getRecipe,
   getRecipeCalories,
   getRecipes,
@@ -47,6 +48,16 @@ const actions = {
     try {
       const recipeCalories = await getRecipeCalories({ recipeId });
       return recipeCalories;
+    } catch (error) {
+      console.error("Erreur lors de la récupération des recettes :", error);
+      throw error;
+    }
+  },
+
+  async deleteRecipe({ recipeId }) {
+    try {
+      const deleteResponse = await deleteRecipe({ recipeId });
+      return deleteResponse;
     } catch (error) {
       console.error("Erreur lors de la récupération des recettes :", error);
       throw error;

@@ -64,7 +64,13 @@
             </q-card-section>
 
             <q-card-actions align="right">
-              <q-btn flat label="Supprimer" color="primary" v-close-popup />
+              <q-btn
+                flat
+                label="Supprimer"
+                color="primary"
+                v-close-popup
+                @click="deleteRecipe"
+              />
               <q-btn flat label="Annuler" color="black" v-close-popup />
             </q-card-actions>
           </q-card>
@@ -102,7 +108,7 @@ import { toRefs, reactive, onBeforeMount } from "vue";
 import { useRecipeStore } from "../../stores/recipe/recipe.store.js";
 import { useIngredientReferentielStore } from "../../stores/ingredientReferentiel/ingredientReferentiel.store.js";
 import { useAuthStore } from "../../stores/auth/auth.store.js";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import get from "lodash/get.js";
 import map from "lodash/map.js";
 
@@ -113,6 +119,7 @@ export default {
     const ingredientReferentielStore = useIngredientReferentielStore();
     const authStore = useAuthStore();
     const route = useRoute();
+    const router = useRouter();
     const state = reactive({
       confirm: false,
       recipe: null,
@@ -153,6 +160,13 @@ export default {
       state.isAnalyzed = true;
     }
 
+    async function deleteRecipe() {
+      const recipeId = get(state.recipe, "_id");
+      await recipeStore.deleteRecipe({ recipeId });
+      state.confirm = false;
+      router.push("/");
+    }
+
     onBeforeMount(async () => {
       const id = get(route.params, "id");
       const recipe = await recipeStore.getRecipe({ id });
@@ -163,6 +177,7 @@ export default {
     return {
       ...toRefs(state),
       analyzeRecipe,
+      deleteRecipe,
     };
   },
 };

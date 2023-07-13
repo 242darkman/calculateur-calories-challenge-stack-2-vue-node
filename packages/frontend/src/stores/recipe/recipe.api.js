@@ -41,3 +41,13 @@ export async function getRecipeCalories({ recipeId }) {
     console.error("Erreur lors de la récupération des recettes :", error);
   }
 }
+
+export async function deleteRecipe({ recipeId }) {
+  try {
+    const uri = `/recipe/${recipeId}`;
+    const response = await api.delete(uri);
+    return response;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des recettes :", error);
+  }
+}
