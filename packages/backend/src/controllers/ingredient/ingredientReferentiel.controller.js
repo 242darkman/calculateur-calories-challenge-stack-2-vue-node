@@ -93,7 +93,7 @@ export async function getReferentiel(req, res) {
   try {
     const referentiel = await IngredientReferentiel.findById(id);
     if (isNull(referentiel) || isUndefined(referentiel)) {
-      res.status(404).json({ error: 'User not found' });
+      res.status(404).json({ error: 'ingredient not found' });
     }
     res.status(200).json(referentiel);
   } catch (error) {}
