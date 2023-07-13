@@ -51,3 +51,13 @@ export async function deleteRecipe({ recipeId }) {
     console.error("Erreur lors de la récupération des recettes :", error);
   }
 }
+
+export async function updateRecipe({ title, ingredients, steps }) {
+  const body = { title, ingredients, steps };
+  try {
+    const response = await api.put("/recipe", body);
+    return response;
+  } catch (error) {
+    console.error("Erreur lors de la création de la recette :", error);
+  }
+}
