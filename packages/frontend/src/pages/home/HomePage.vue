@@ -34,7 +34,6 @@
 
         <template v-slot:body-cell-btnDetail="props">
           <q-td :props="props">
-            {{ props.row }}
             <q-btn
               @click="$router.push('/details-recipe/' + props.row.id)"
               unelevated
