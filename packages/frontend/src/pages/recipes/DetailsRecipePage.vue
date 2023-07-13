@@ -1,5 +1,4 @@
 <template>
-
   <q-btn
     class="q-mb-lg"
     to="/"
@@ -69,18 +68,13 @@
               <q-item clickable v-close-popup @click="analyzeRecipe">
                 <q-item-section>Analyser</q-item-section>
               </q-item>
-              <q-item clickable v-close-popup @click="exportData">
+              <q-item clickable v-close-popup @click="exportRecipeAsJson">
                 <q-item-section>Exporter en JSON</q-item-section>
               </q-item>
               <q-item clickable v-close-popup>
                 <q-item-section>Exporter en CSV</q-item-section>
               </q-item>
-              <q-item
-                clickable
-                v-close-popup
-                @click="confirm = true"
-                
-              >
+              <q-item clickable v-close-popup @click="confirm = true">
                 <q-item-section>Supprimer</q-item-section>
               </q-item>
             </q-list>
@@ -199,28 +193,27 @@ export default {
       router.push("/");
     }
 
-        async function exportData() {
-          try {
-            const id = state.recipe._id;
-            const response = await recipeStore.getExportData({ id });
-            
-            if (!response) {
-              console.error('No export data available');
-              return;
-            }
+    async function exportRecipeAsJson() {
+      try {
+        const id = state.recipe._id;
+        const response = await recipeStore.exportRecipeAsJson({ id });
 
-            const exportData = JSON.stringify(response, null, 2);
-            const blob = new Blob([exportData], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'recipe.json';
-            link.click();
-
-          } catch (error) {
-            console.error(error);
-          }
+        if (!response) {
+          console.error("No export data available");
+          return;
         }
+
+        const exportData = JSON.stringify(response, null, 2);
+        const blob = new Blob([exportData], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "recipe.json";
+        link.click();
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
     onBeforeMount(async () => {
       const id = get(route.params, "id");
@@ -233,7 +226,7 @@ export default {
       ...toRefs(state),
       analyzeRecipe,
       deleteRecipe,
-      exportData
+      exportRecipeAsJson,
     };
   },
 };

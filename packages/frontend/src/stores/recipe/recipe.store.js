@@ -1,10 +1,10 @@
 import {
   createRecipe,
   deleteRecipe,
+  exportRecipeAsJson,
   getRecipe,
   getRecipeCalories,
   getRecipes,
-  getExport,
 } from "src/stores/recipe/recipe.api.js";
 
 import { defineStore } from "pinia";
@@ -19,7 +19,10 @@ const actions = {
       const data = await createRecipe({ title, author, ingredients, steps });
       return data;
     } catch (error) {
-      console.error("Erreur lors de la création de la recette :", error);
+      console.error(
+        `Erreur lors de la création de la recette '${title}':`,
+        error
+      );
       throw error;
     }
   },
@@ -30,7 +33,10 @@ const actions = {
       this.recipes = recipes;
       return recipes;
     } catch (error) {
-      console.error("Erreur lors de la récupération des recettes :", error);
+      console.error(
+        "Erreur lors de la récupération de toutes les recettes :",
+        error
+      );
       throw error;
     }
   },
@@ -40,7 +46,12 @@ const actions = {
       const recipe = await getRecipe({ id });
       return recipe;
     } catch (error) {
-      console.error("Erreur lors de la récupération des recettes :", error);
+      console.error(
+        "Erreur lors de la récupération de la recette avec l'ID:",
+        id,
+        "\nDétails de l'erreur:",
+        error
+      );
       throw error;
     }
   },
@@ -50,7 +61,10 @@ const actions = {
       const recipeCalories = await getRecipeCalories({ recipeId });
       return recipeCalories;
     } catch (error) {
-      console.error("Erreur lors de la récupération des recettes :", error);
+      console.error(
+        "Erreur lors de la récupération des calories de la recette :",
+        error
+      );
       throw error;
     }
   },
@@ -60,17 +74,20 @@ const actions = {
       const deleteResponse = await deleteRecipe({ recipeId });
       return deleteResponse;
     } catch (error) {
-      console.error("Erreur lors de la récupération des recettes :", error);
+      console.error("Erreur lors de la suppression de la recette :", error);
       throw error;
     }
   },
 
-  async getExportData({ id }) {
+  async exportRecipeAsJson({ id }) {
     try {
-      const data = await getExport({ id });
+      const data = await exportRecipeAsJson({ id });
       return data;
     } catch (error) {
-      console.error("erreur de la récupération par id:", error);
+      console.error(
+        "Erreur lors de la récupération de la recette par ID :",
+        error
+      );
       throw error;
     }
   },

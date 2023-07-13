@@ -16,7 +16,10 @@ export async function getRecipes() {
     const recipes = response.data;
     return recipes;
   } catch (error) {
-    console.error("Erreur lors de la récupération des recettes :", error);
+    console.error(
+      "Erreur lors de la récupération de toutes les recettes :",
+      error
+    );
   }
 }
 
@@ -27,7 +30,10 @@ export async function getRecipe({ id }) {
     const recipe = response.data;
     return recipe;
   } catch (error) {
-    console.error("Erreur lors de la récupération des recettes :", error);
+    console.error(
+      `Erreur lors de la récupération de la recette avec l'ID ${id} :`,
+      error
+    );
   }
 }
 
@@ -38,7 +44,10 @@ export async function getRecipeCalories({ recipeId }) {
     const recipeCalories = response.data;
     return recipeCalories;
   } catch (error) {
-    console.error("Erreur lors de la récupération des recettes :", error);
+    console.error(
+      `Erreur lors de la récupération des calories pour la recette avec l'ID ${recipeId} :`,
+      error
+    );
   }
 }
 
@@ -48,7 +57,10 @@ export async function deleteRecipe({ recipeId }) {
     const response = await api.delete(uri);
     return response;
   } catch (error) {
-    console.error("Erreur lors de la récupération des recettes :", error);
+    console.error(
+      `Erreur lors de la suppression de la recette avec l'ID ${recipeId} :`,
+      error
+    );
   }
 }
 
@@ -58,19 +70,19 @@ export async function updateRecipe({ title, ingredients, steps }) {
     const response = await api.put("/recipe", body);
     return response;
   } catch (error) {
-    console.error("Erreur lors de la création de la recette :", error);
+    console.error("Erreur lors de la mise à jour de la recette :", error);
   }
 }
 
-export async function getExport({ id }) {
+export async function exportRecipeAsJson({ id }) {
   try {
-    const uri = `recipe/${id}/export`;
+    const uri = `recipe/${id}/json`;
     const response = await api.get(uri);
-    const ingredient = response.data;
-    return ingredient;
+    const jsonRecipe = response.data;
+    return jsonRecipe;
   } catch (error) {
     console.error(
-      "Erreur lors de la récupération des informations sur les référentiels :",
+      "Erreur lors de l'exportation de la recette en JSON :",
       error
     );
   }

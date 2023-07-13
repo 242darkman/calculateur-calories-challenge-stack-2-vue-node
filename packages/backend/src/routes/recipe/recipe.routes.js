@@ -1,11 +1,11 @@
 import {
   createRecipe,
   deleteRecipe,
+  exportSingleRecipeAsJson,
   getRecipe,
   getRecipeCalories,
   getRecipes,
   updateRecipe,
-  exportRecipe,
 } from '../../controllers/recipe/recipe.controller.js';
 
 import express from 'express';
@@ -114,6 +114,64 @@ router.put('/recipe/:id', updateRecipe);
  */
 router.delete('/recipe/:id', deleteRecipe);
 
-router.get('/recipe/:id/export', exportRecipe);
+/**
+ * @swagger
+ * /recipe/{id}/json:
+ *   get:
+ *     tags:
+ *       - Recipe
+ *     description: Returns a specific recipe in JSON format
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: Recipe's id
+ *         in: path
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: A recipe in JSON format
+ *         schema:
+ *           type: object
+ *           properties:
+ *             _id:
+ *               type: string
+ *               example: "60c72b4f9f1b2c001f8e4d6a"
+ *             title:
+ *               type: string
+ *               example: "Delicious Salad"
+ *             author:
+ *               type: string
+ *               example: "60c72b4f9f1b2c001f8e4d7a"
+ *             publication_date:
+ *               type: string
+ *               format: date-time
+ *               example: "2023-07-13T10:20:30Z"
+ *             ingredients:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                     example: "Tomato"
+ *                   quantity:
+ *                     type: string
+ *                     example: "2 pieces"
+ *             steps:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   step_description:
+ *                     type: string
+ *                     example: "Chop the tomatoes"
+ *       404:
+ *         description: Recipe not found
+ *       500:
+ *         description: Error
+ */
+router.get('/recipe/:id/json', exportSingleRecipeAsJson);
 
 export default router;
