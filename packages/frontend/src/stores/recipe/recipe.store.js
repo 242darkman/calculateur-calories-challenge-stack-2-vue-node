@@ -4,6 +4,7 @@ import {
   getRecipe,
   getRecipeCalories,
   getRecipes,
+  getExport,
 } from "src/stores/recipe/recipe.api.js";
 
 import { defineStore } from "pinia";
@@ -60,6 +61,16 @@ const actions = {
       return deleteResponse;
     } catch (error) {
       console.error("Erreur lors de la récupération des recettes :", error);
+      throw error;
+    }
+  },
+
+  async getExportData({ id }) {
+    try {
+      const data = await getExport({ id });
+      return data;
+    } catch (error) {
+      console.error("erreur de la récupération par id:", error);
       throw error;
     }
   },

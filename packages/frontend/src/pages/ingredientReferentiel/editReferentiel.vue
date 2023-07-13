@@ -42,15 +42,7 @@
           />
         </div>
 
-        <div class="row justify-center q-mt-md">
-          <q-btn
-            color="primary"
-            label="Fichier json"
-            class="btn"
-            @click="exportData"
-          />
-        </div>
-      </q-card-section>
+      </q-card-section> 
     </q-card>
   </q-page>
 </template>
@@ -98,30 +90,6 @@ export default({
             }
         }
 
-      async function exportData() {
-        try {
-          const id = referentiel.value._id;
-          const response = await ingredientReferentielStore.getExportData({ id });
-
-          if (!response) {
-            console.error('No export data available');
-            return;
-          }
-
-          const exportData = JSON.stringify(response, null, 2);
-          const blob = new Blob([exportData], { type: 'application/json' });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = 'recipe.json';
-          link.click();
-
-          console.log("Téléchargement effectué");
-        } catch (error) {
-          console.error(error);
-        }
-      }
-
       return {
         expanded,
         referentiel,
@@ -130,7 +98,6 @@ export default({
         proteines,
         goToReferentiels,
         update,
-        exportData
       }; 
     },
 })   

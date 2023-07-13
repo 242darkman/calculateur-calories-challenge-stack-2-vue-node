@@ -61,3 +61,17 @@ export async function updateRecipe({ title, ingredients, steps }) {
     console.error("Erreur lors de la création de la recette :", error);
   }
 }
+
+export async function getExport({ id }) {
+  try {
+    const uri = `recipe/${id}/export`;
+    const response = await api.get(uri);
+    const ingredient = response.data;
+    return ingredient;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des informations sur les référentiels :",
+      error
+    );
+  }
+}

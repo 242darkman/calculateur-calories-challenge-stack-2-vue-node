@@ -69,7 +69,7 @@
               <q-item clickable v-close-popup @click="analyzeRecipe">
                 <q-item-section>Analyser</q-item-section>
               </q-item>
-              <q-item clickable v-close-popup>
+              <q-item clickable v-close-popup @click="exportData">
                 <q-item-section>Exporter en JSON</q-item-section>
               </q-item>
               <q-item clickable v-close-popup>
@@ -79,7 +79,7 @@
                 clickable
                 v-close-popup
                 @click="confirm = true"
-                v-if="owner._id === recipe.author"
+                
               >
                 <q-item-section>Supprimer</q-item-section>
               </q-item>
@@ -199,6 +199,29 @@ export default {
       router.push("/");
     }
 
+        async function exportData() {
+          try {
+            const id = state.recipe._id;
+            const response = await recipeStore.getExportData({ id });
+            
+            if (!response) {
+              console.error('No export data available');
+              return;
+            }
+
+            const exportData = JSON.stringify(response, null, 2);
+            const blob = new Blob([exportData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'recipe.json';
+            link.click();
+
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
     onBeforeMount(async () => {
       const id = get(route.params, "id");
       const recipe = await recipeStore.getRecipe({ id });
@@ -210,6 +233,7 @@ export default {
       ...toRefs(state),
       analyzeRecipe,
       deleteRecipe,
+      exportData
     };
   },
 };

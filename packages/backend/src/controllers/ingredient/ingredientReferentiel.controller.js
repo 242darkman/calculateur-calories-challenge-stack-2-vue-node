@@ -1,10 +1,7 @@
 import IngredientReferentiel from '../../models/ingredient/ingredientReferentiel.model.js';
-import fs from 'fs';
 import get from 'lodash/get.js';
 import isNull from 'lodash/isNull.js';
 import isUndefined from 'lodash/isUndefined.js';
-import os from 'os';
-import path from 'path';
 
 /**
  * Récupère tous les ingrédients du Référentiel.
@@ -97,38 +94,4 @@ export async function getReferentiel(req, res) {
     }
     res.status(200).json(referentiel);
   } catch (error) {}
-}
-
-/**
- * TEST POUR EXPORT
- */
-export async function exportIngredient(req, res) {
-  const { id } = req.params;
-
-  try {
-    const ingredient = await IngredientReferentiel.findById(id);
-    if (!ingredient) {
-      return res.status(404).json({ error: 'ingredient not found' });
-    }
-
-    const exportData = JSON.stringify(ingredient, null, 2);
-    const fileName = `recipe.json`;
-
-    const tempFilePath = path.join(os.tmpdir(), fileName);
-
-    fs.writeFileSync(tempFilePath, exportData, 'utf-8');
-
-    res.download(tempFilePath, fileName, (err) => {
-      if (err) {
-        res
-          .status(500)
-          .json({ error: 'Error downloading file: ' + err.toString() });
-      }
-
-      // Supprimer le fichier temporaire après le téléchargement
-      fs.unlinkSync(tempFilePath);
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.toString() });
-  }
 }

@@ -1,11 +1,4 @@
 <template>
-  <q-btn class="q-mb-lg" id="btn"
-    to="/ingredient-referentiel"
-    unelevated
-    color="light-blue-8"
-    icon="arrow_back"
-  ></q-btn>
-
   <q-page class="flex flex-center">
     <q-card class="full-width">
       <q-card-section>
