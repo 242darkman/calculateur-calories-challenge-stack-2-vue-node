@@ -111,7 +111,7 @@ export default {
         return {
           id: recipe._id,
           title: recipe.title,
-          author: `${author.firstName} ${author.lastName}`,
+          author: `${author?.firstName} ${author?.lastName}`,
           publicationDate: formattedDate,
         };
       });
