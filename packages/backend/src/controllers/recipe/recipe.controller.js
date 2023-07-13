@@ -1,7 +1,8 @@
+import IngredientReferentiel from '../../models/ingredient/ingredientReferentiel.model.js';
 import Recipe from '../../models/recipe/recipe.model.js';
 import get from 'lodash/get.js';
-import isUndefined from 'lodash/isUndefined.js';
 import isNull from 'lodash/isNull.js';
+import isUndefined from 'lodash/isUndefined.js';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -36,7 +37,7 @@ export async function getRecipe(req, res) {
 }
 
 /**
- * création de la recette
+ * Crée une recette.
  */
 export async function createRecipe(req, res) {
   try {
@@ -59,7 +60,7 @@ export async function createRecipe(req, res) {
 }
 
 /**  *
- * MAJ Recipe
+ * Met à jour une recette.
  */
 export async function updateRecipe(req, res) {
   const updatedInfo = Object.keys(req.body);
@@ -81,7 +82,7 @@ export async function updateRecipe(req, res) {
 }
 
 /**
- * DELETE Recipe
+ * Supprime une recette
  */
 export async function deleteRecipe(req, res) {
   try {
@@ -97,6 +98,32 @@ export async function deleteRecipe(req, res) {
 }
 
 /**
+ * Récupère le nombre total de calories d'une recette.
+ */
+export async function getRecipeCalories(req, res) {
+  try {
+    const id = get(req.params, 'id');
+    const recipe = await Recipe.findById(id).populate('ingredients.ingredient');
+
+    if (!recipe) {
+      return res.status(404).json({ error: 'Recipe not found' });
+    }
+
+    let totalCalories = 0;
+
+    for (const ingredient of recipe.ingredients) {
+      const ingredientReferentiel = await IngredientReferentiel.findById(
+        ingredient.ingredient
+      );
+      totalCalories += ingredientReferentiel.calories * ingredient.quantity;
+    }
+
+    res.status(200).json({ totalCalories });
+  } catch (error) {
+    res.status(500).json({ error: error.toString() });
+  }
+}
+
  * Méthode pour récupérer le JSON
  */
 // export async function exportRecipe(req, res) {
@@ -179,3 +206,4 @@ export async function deleteRecipe(req, res) {
 //     res.status(500).json({ error: error.toString() });
 //   }
 // }
+

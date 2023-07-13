@@ -1,17 +1,27 @@
+import IngredientReferentiel from '../../models/ingredient/ingredientReferentiel.model.js';
 import get from 'lodash/get.js';
-import isUndefined from 'lodash/isUndefined.js';
 import isNull from 'lodash/isNull.js';
+import isUndefined from 'lodash/isUndefined.js';
 import IngredientRefentiel from '../../models/ingredient/ingredientRefentiel.model.js';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
 /**
- * récupération de l'ensemble des ingredients Referentiels
+ * Récupère tous les ingrédients du Référentiel.
  */
 export async function getIngredientReferentiels(req, res) {
   try {
-    const ingredients = await IngredientRefentiel.find();
+    let ingredients = await IngredientReferentiel.find();
+
+    // Conversion des valeurs Decimal128 en Number
+    ingredients = ingredients.map((doc) => {
+      const ingredient = doc.toObject();
+      ingredient.calories = parseFloat(ingredient.calories.toString());
+      ingredient.proteines = parseFloat(ingredient.proteines.toString());
+      return ingredient;
+    });
+
     res.status(200).json(ingredients);
   } catch (error) {
     res.status(500).json({ error: error.toString() });
@@ -19,11 +29,11 @@ export async function getIngredientReferentiels(req, res) {
 }
 
 /**
- * création de l'ingredient
+ * Crée un nouvel ingrédient dans le Référentiel.
  */
 export async function createIngredientReferentiel(req, res) {
   try {
-    const ingredient = new IngredientRefentiel(req.body);
+    const ingredient = new IngredientReferentiel(req.body);
     await ingredient
       .save()
       .then((result) => {
@@ -41,17 +51,14 @@ export async function createIngredientReferentiel(req, res) {
   }
 }
 
-/**  *
- * MAJ ingredient
+/**
+ * Met à jour un ingrédient existant dans le Référentiel.
  */
 export async function updateIngredientReferentiel(req, res) {
   const updatedInfo = Object.keys(req.body);
   const id = req.params.id;
-  console.log('id = ' + id);
   try {
-    console.log('avant ingr = ' + id);
-    const ingredient = await IngredientRefentiel.findById(id);
-    console.log('apres ingr = ' + ingredient);
+    const ingredient = await IngredientReferentiel.findById(id);
     if (!ingredient) {
       return res.status(404).json({ error: 'Ingredient not found' });
     }
@@ -66,12 +73,12 @@ export async function updateIngredientReferentiel(req, res) {
 }
 
 /**
- * DELETE ingredient
+ * Supprime un ingrédient spécifique du Référentiel.
  */
 export async function deleteIngredientReferentiel(req, res) {
   try {
     const id = get(req.params, 'id');
-    const ingredient = await IngredientRefentiel.findByIdAndRemove(id);
+    const ingredient = await IngredientReferentiel.findByIdAndRemove(id);
     if (isNull(ingredient) || isUndefined(ingredient)) {
       return res.status(404).json({ error: 'ingredient not found' });
     }
