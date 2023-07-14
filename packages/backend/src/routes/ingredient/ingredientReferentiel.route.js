@@ -6,13 +6,14 @@ import {
   updateIngredientReferentiel,
 } from '../../controllers/ingredient/ingredientReferentiel.controller.js';
 
+import { authorize } from '../../guards/auth.guard.js';
 import express from 'express';
 
 const router = express.Router();
 
 /**
  * @swagger
- * /ingredientReferentiel:
+ * /api/ingredientReferentiel:
  *   post:
  *     summary: Create a new ingredient
  *     tags: [IngredientReferentiel]
@@ -21,18 +22,34 @@ const router = express.Router();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/IngredientReferentiel'
+ *             type: object
+ *             required:
+ *               - name
+ *               - calories
+ *               - proteines
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The name of the ingredient
+ *               calories:
+ *                 type: string
+ *                 format: decimal
+ *                 description: The calories of the ingredient
+ *               proteines:
+ *                 type: string
+ *                 format: decimal
+ *                 description: The proteines of the ingredient
  *     responses:
  *       201:
  *         description: The ingredient was successfully created
  *       500:
  *         description: Something went wrong
  */
-router.post('/ingredientReferentiel', createIngredientReferentiel);
+router.post('/ingredientReferentiel', authorize, createIngredientReferentiel);
 
 /**
  * @swagger
- * /ingredientReferentiels:
+ * /api/ingredientReferentiels:
  *   get:
  *     summary: Retrieve all ingredients
  *     tags: [IngredientReferentiel]
@@ -46,7 +63,21 @@ router.get('/ingredientReferentiels', getIngredientReferentiels);
 
 /**
  * @swagger
- * /ingredientReferentiel/{id}:
+ * /api/ingredientReferentiel/{id}:
+ *   get:
+ *     summary: Retrieve specific ingredient
+ *     tags: [IngredientReferentiel]
+ *     responses:
+ *       200:
+ *         description: The list of all ingredients
+ *       500:
+ *         description: Something went wrong
+ */
+router.get('/ingredientReferentiel/:id', authorize, getReferentiel);
+
+/**
+ * @swagger
+ * /api/ingredientReferentiel/{id}:
  *   put:
  *     summary: Update a specific ingredient
  *     tags: [IngredientReferentiel]
@@ -62,7 +93,23 @@ router.get('/ingredientReferentiels', getIngredientReferentiels);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/IngredientReferentiel'
+ *             type: object
+ *             required:
+ *               - name
+ *               - calories
+ *               - proteines
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The name of the ingredient
+ *               calories:
+ *                 type: string
+ *                 format: decimal
+ *                 description: The calories of the ingredient
+ *               proteines:
+ *                 type: string
+ *                 format: decimal
+ *                 description: The proteines of the ingredient
  *     responses:
  *       200:
  *         description: The ingredient was successfully updated
@@ -71,13 +118,15 @@ router.get('/ingredientReferentiels', getIngredientReferentiels);
  *       500:
  *         description: Something went wrong
  */
-router.get('/ingredientReferentiel/:id', getReferentiel);
-
-router.put('/ingredientReferentiel/:id', updateIngredientReferentiel);
+router.put(
+  '/ingredientReferentiel/:id',
+  authorize,
+  updateIngredientReferentiel
+);
 
 /**
  * @swagger
- * /ingredientReferentiel/{id}:
+ * /api/ingredientReferentiel/{id}:
  *   delete:
  *     summary: Delete a specific ingredient
  *     tags: [IngredientReferentiel]
@@ -96,6 +145,10 @@ router.put('/ingredientReferentiel/:id', updateIngredientReferentiel);
  *       500:
  *         description: Something went wrong
  */
-router.delete('/ingredientReferentiel/:id', deleteIngredientReferentiel);
+router.delete(
+  '/ingredientReferentiel/:id',
+  authorize,
+  deleteIngredientReferentiel
+);
 
 export default router;

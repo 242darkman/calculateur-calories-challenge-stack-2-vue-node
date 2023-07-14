@@ -47,7 +47,7 @@ router.post('/auth/register', register);
  *   post:
  *     tags:
  *       - Auth
- *     summary: Connect the user to the application
+ *     summary: Connect the user to the application with email or username
  *     requestBody:
  *       required: true
  *       content:
@@ -55,7 +55,7 @@ router.post('/auth/register', register);
  *           schema:
  *             type: object
  *             properties:
- *               email:
+ *               loginName:
  *                 type: string
  *               password:
  *                 type: string

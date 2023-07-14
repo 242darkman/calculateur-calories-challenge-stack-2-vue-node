@@ -6,6 +6,7 @@ import {
   updateUser,
 } from '../../controllers/user/user.controller.js';
 
+import { authorize } from '../../guards/auth.guard.js';
 import { body } from 'express-validator';
 import express from 'express';
 
@@ -26,13 +27,30 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/User'
+ *                 type: object
+ *                 properties:
+ *                   userName:
+ *                     type: string
+ *                   firstName:
+ *                     type: string
+ *                   lastName:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *                   password:
+ *                     type: string
+ *                   arrivedAt:
+ *                     type: string
+ *                   roles:
+ *                     type: array
+ *                     items:
+ *                       type: string
  *       '400':
  *         description: Invalid request
  *       '404':
  *         description: User not found
  */
-router.get('/users', getUsers);
+router.get('/users', authorize, getUsers);
 
 /**
  * @swagger
@@ -45,7 +63,6 @@ router.get('/users', getUsers);
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the user to retrieve
  *         schema:
  *           type: integer
  *     responses:
@@ -54,7 +71,24 @@ router.get('/users', getUsers);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 userName:
+ *                   type: string
+ *                 firstName:
+ *                   type: string
+ *                 lastName:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 password:
+ *                   type: string
+ *                 arrivedAt:
+ *                   type: string
+ *                 roles:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *       '400':
  *         description: Invalid request
  *       '404':
@@ -73,7 +107,6 @@ router.get('/user/:id', getUser);
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the user to update
  *         schema:
  *           type: integer
  *     requestBody:
@@ -82,7 +115,18 @@ router.get('/user/:id', getUser);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UserInput'
+ *             type: object
+ *             properties:
+ *               userName:
+ *                 type: string
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
  *     responses:
  *       '200':
  *         description: User updated successfully
@@ -91,7 +135,7 @@ router.get('/user/:id', getUser);
  *       '404':
  *         description: User not found
  */
-router.put('/user/:id', updateUser);
+router.put('/user/:id', authorize, updateUser);
 
 /**
  * @swagger
@@ -115,21 +159,38 @@ router.put('/user/:id', updateUser);
  *       '404':
  *         description: User not found
  */
-router.delete('/user/:id', deleteUser);
+router.delete('/user/:id', authorize, deleteUser);
 
 /**
  * @swagger
  * /api/user:
  *   post:
  *     tags:
- *      - User
+ *       - User
  *     summary: Create a new user
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UserInput'
+ *             type: object
+ *             required:
+ *               - userName
+ *               - firstName
+ *               - lastName
+ *               - email
+ *               - password
+ *             properties:
+ *               userName:
+ *                 type: string
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
  *     responses:
  *       '201':
  *         description: User created successfully

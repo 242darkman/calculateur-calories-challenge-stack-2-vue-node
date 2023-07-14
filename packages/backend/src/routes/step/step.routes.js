@@ -5,6 +5,7 @@ import {
   updateStep,
 } from '../../controllers/step/step.controller.js';
 
+import { authorize } from '../../guards/auth.guard.js';
 import express from 'express';
 
 const router = express.Router();
@@ -17,11 +18,26 @@ const router = express.Router();
  *       - Step
  *     summary: Create a new step
  *     description: Creates a new step for a recipe
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - description
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Successfully created
  */
-router.post('/step', createStep);
+router.post('/step', authorize, createStep);
+router.post('/step', authorize, createStep);
 
 /**
  * @swagger
@@ -35,7 +51,7 @@ router.post('/step', createStep);
  *       200:
  *         description: An array of steps
  */
-router.get('/steps', getSteps);
+router.get('/steps', authorize, getSteps);
 
 /**
  * @swagger
@@ -50,12 +66,27 @@ router.get('/steps', getSteps);
  *         description: Step's id
  *         in: path
  *         required: true
- *         type: string
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - title
+ *               - description
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Successfully updated
  */
-router.put('/step/:id', updateStep);
+router.put('/step/:id', authorize, updateStep);
 
 /**
  * @swagger
@@ -75,6 +106,6 @@ router.put('/step/:id', updateStep);
  *       200:
  *         description: Successfully deleted
  */
-router.delete('/step/:id', deleteStep);
+router.delete('/step/:id', authorize, deleteStep);
 
 export default router;

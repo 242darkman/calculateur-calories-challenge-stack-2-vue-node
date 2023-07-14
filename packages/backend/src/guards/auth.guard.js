@@ -2,108 +2,62 @@ import {
   checkRefreshToken,
   generateAccessToken,
 } from '../controllers/auth/auth.controller.js';
-import { get, includes } from 'lodash';
 
-import User from '../../models/user/user.model.js';
+import User from '../models/user/user.model.js';
+import get from 'lodash/get.js';
 import jwt from 'jsonwebtoken';
 
-export async function userGuard(req, res, next) {
-  const token = req.headers['x-access-token'];
-  const refreshToken = req.headers['x-refresh-token'];
+export async function authorize(req, res, next) {
+  // Récupérez le token du cookie
+  const token = get(req.cookies, 'access_token');
 
   if (!token) {
     return res.status(403).send({ auth: false, message: 'No token provided.' });
   }
 
-  jwt.verify(token, process.env.SECRET, async function (err, decoded) {
+  // Vérifiez le token
+  jwt.verify(token, process.env.SECRET, async (err, decoded) => {
     if (err) {
-      if (err.name === 'TokenExpiredError') {
-        try {
-          const userId = await checkRefreshToken(refreshToken);
-          const user = await User.findById(userId);
-          if (!user) {
-            return res
-              .status(404)
-              .send({ auth: false, message: 'No user found.' });
-          }
+      // Si le token n'est pas valide, essayez de le rafraîchir
+      const refreshToken = get(req.cookies, 'refresh_token');
 
-          const newToken = generateAccessToken(user);
-          res.setHeader('x-access-token', newToken);
-        } catch (refreshTokenErr) {
-          return res
-            .status(403)
-            .send({ auth: false, message: refreshTokenErr.message });
-        }
-      } else {
-        return res
-          .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' });
-      }
-    } else {
-      const user = await User.findById(decoded.id);
-      if (!user) {
-        return res.status(404).send({ auth: false, message: 'No user found.' });
-      }
-
-      req.user = user;
-      next();
-    }
-  });
-}
-
-export async function adminGuard(req, res, next) {
-  const token = req.headers['x-access-token'];
-  const refreshToken = req.headers['x-refresh-token'];
-
-  if (!token) {
-    return res.status(403).send({ auth: false, message: 'No token provided.' });
-  }
-
-  jwt.verify(token, process.env.SECRET, async function (err, decoded) {
-    if (err) {
-      if (err.name === 'TokenExpiredError') {
-        try {
-          const userId = await checkRefreshToken(refreshToken);
-          const user = await User.findById(userId);
-          if (!user) {
-            return res
-              .status(404)
-              .send({ auth: false, message: 'No user found.' });
-          }
-
-          const roles = get(user, 'roles');
-          if (!includes(roles, 'admin')) {
-            return res
-              .status(403)
-              .send({ auth: false, message: 'Requires admin role.' });
-          }
-
-          const newToken = generateAccessToken(user);
-          res.setHeader('x-access-token', newToken);
-        } catch (refreshTokenErr) {
-          return res
-            .status(403)
-            .send({ auth: false, message: refreshTokenErr.message });
-        }
-      } else {
-        return res
-          .status(500)
-          .send({ auth: false, message: 'Failed to authenticate token.' });
-      }
-    } else {
-      const user = await User.findById(decoded.id);
-      if (!user) {
-        return res.status(404).send({ auth: false, message: 'No user found.' });
-      }
-
-      const roles = get(user, 'roles');
-      if (!includes(roles, 'admin')) {
+      if (!refreshToken) {
         return res
           .status(403)
-          .send({ auth: false, message: 'Requires admin role.' });
+          .send({ auth: false, message: 'No refresh token provided.' });
       }
 
-      req.user = user;
+      jwt.verify(refreshToken, process.env.SECRET, async (err, decoded) => {
+        if (err) {
+          return res.status(500).send({
+            auth: false,
+            message: 'Failed to authenticate refresh token.',
+          });
+        }
+
+        const user = await User.findById(decoded.id);
+
+        if (!user) {
+          return res.status(404).send('No user found.');
+        }
+
+        // Créez un nouveau token
+        const newToken = jwt.sign({ id: user._id }, process.env.SECRET, {
+          expiresIn: 86400,
+        });
+
+        // Envoyez le nouveau token
+        res.cookie('access_token', newToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: true,
+        });
+
+        next();
+      });
+    } else {
+      // Si le token est valide, passez à la requête suivante
+      req.userId = decoded.id;
       next();
     }
   });

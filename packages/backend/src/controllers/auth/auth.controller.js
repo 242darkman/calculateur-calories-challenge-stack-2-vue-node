@@ -55,7 +55,7 @@ export async function login(req, res) {
       sameSite: true,
     });
 
-    return res.status(200).send({ auth: true });
+    return res.status(200).send({ auth: true, token });
   } catch (err) {
     return res.status(500).send('There was a problem logging in.');
   }

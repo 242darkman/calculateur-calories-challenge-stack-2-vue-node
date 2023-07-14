@@ -9,6 +9,7 @@ import {
   updateRecipe,
 } from '../../controllers/recipe/recipe.controller.js';
 
+import { authorize } from '../../guards/auth.guard.js';
 import express from 'express';
 
 const router = express.Router();
@@ -25,7 +26,7 @@ const router = express.Router();
  *       200:
  *         description: Successfully created
  */
-router.post('/recipe', createRecipe);
+router.post('/recipe', authorize, createRecipe);
 
 /**
  * @swagger
@@ -93,7 +94,7 @@ router.get('/recipes', getRecipes);
  *                 __v:
  *                   type: 'integer'
  */
-router.get('/recipe/generate', generateRecipe);
+router.get('/recipe/generate', authorize, generateRecipe);
 
 /**
  * @swagger
@@ -113,7 +114,7 @@ router.get('/recipe/generate', generateRecipe);
  *       200:
  *         description: A single recipe
  */
-router.get('/recipe/:id', getRecipe);
+router.get('/recipe/:id', authorize, getRecipe);
 
 /**
  * @swagger
@@ -133,7 +134,7 @@ router.get('/recipe/:id', getRecipe);
  *       200:
  *         description: Total calories
  */
-router.get('/recipe/:id/analyze', getRecipeCalories);
+router.get('/recipe/:id/analyze', authorize, getRecipeCalories);
 
 /**
  * @swagger
@@ -153,7 +154,7 @@ router.get('/recipe/:id/analyze', getRecipeCalories);
  *       200:
  *         description: Successfully updated
  */
-router.put('/recipe/:id', updateRecipe);
+router.put('/recipe/:id', authorize, updateRecipe);
 
 /**
  * @swagger
@@ -173,7 +174,7 @@ router.put('/recipe/:id', updateRecipe);
  *       200:
  *         description: Successfully deleted
  */
-router.delete('/recipe/:id', deleteRecipe);
+router.delete('/recipe/:id', authorize, deleteRecipe);
 
 /**
  * @swagger
@@ -234,6 +235,6 @@ router.delete('/recipe/:id', deleteRecipe);
  *       500:
  *         description: Error
  */
-router.get('/recipe/:id/json', exportSingleRecipeAsJson);
+router.get('/recipe/:id/json', authorize, exportSingleRecipeAsJson);
 
 export default router;
