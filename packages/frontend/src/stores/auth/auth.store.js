@@ -9,6 +9,10 @@ const getters = {
 };
 
 const actions = {
+  SET_IS_USER_AUTHENTICATED({ isUserAuthenticated }) {
+    this.isUserAuthenticated = isUserAuthenticated;
+  },
+
   async login({ loginName, password }) {
     try {
       const loginInfo = await login({ loginName, password });

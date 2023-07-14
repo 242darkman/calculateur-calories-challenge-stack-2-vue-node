@@ -8,6 +8,17 @@ import {
 import { route } from "quasar/wrappers";
 import routes from "./routes";
 
+function isTokenValid({ accessToken }) {
+  try {
+    const { exp } = JSON.parse(atob(accessToken.split(".")[1]));
+
+    // Vérifie si le token est expiré
+    return Date.now() < exp * 1000;
+  } catch {
+    return false;
+  }
+}
+
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
@@ -27,7 +38,8 @@ export default route(function (/* { store, ssrContext } */) {
   Router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth)) {
       const accessToken = localStorage.getItem("access_token");
-      if (!accessToken) {
+      if (!accessToken || !isTokenValid({ accessToken })) {
+        localStorage.removeItem("access_token");
         return next({ name: "login" });
       }
     }

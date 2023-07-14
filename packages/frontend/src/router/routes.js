@@ -12,6 +12,7 @@ const routes = [
         path: "details-recipe/:id",
         name: "details-recipe",
         component: () => import("src/pages/recipes/DetailsRecipePage.vue"),
+        meta: { requiresAuth: true },
       },
       {
         path: "/profile",
@@ -59,12 +60,14 @@ const routes = [
         name: "editReferentiel",
         component: () =>
           import("src/pages/ingredientReferentiel/editReferentiel.vue"),
+          meta: { requiresAuth: true },
       },
       {
         path: "create-referentiel",
         name: "createReferentiel",
         component: () =>
           import("src/pages/ingredientReferentiel/createReferentiel.vue"),
+          meta: { requiresAuth: true },
       },
     ],
   },
