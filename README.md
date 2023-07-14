@@ -1,5 +1,7 @@
 # Calculateur de Calories - Challenge Stack 2 Vue Node
 
+![Architecture](schema_architecture.png)
+
 ## Membres du Groupe
 
 - **VOUVOU Brandon**
