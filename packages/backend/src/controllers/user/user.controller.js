@@ -134,3 +134,18 @@ export async function deleteUser(req, res, next) {
     return res.status(400).json({ error: error.toString() });
   }
 }
+
+export async function createBotUser() {
+  let user = await User.findOne({ userName: 'bot' });
+  if (!user) {
+    user = new User({
+      userName: 'bot',
+      firstName: 'Bot',
+      lastName: 'User',
+      email: 'bot@example.com',
+      password: 'botpassword',
+    });
+    await user.save();
+  }
+  return user;
+}

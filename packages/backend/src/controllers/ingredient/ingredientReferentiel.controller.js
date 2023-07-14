@@ -95,3 +95,27 @@ export async function getReferentiel(req, res) {
     res.status(200).json(referentiel);
   } catch (error) {}
 }
+
+export async function getRandomIngredient() {
+  const count = await IngredientReferentiel.countDocuments();
+  const random = Math.floor(Math.random() * count);
+  return await IngredientReferentiel.findOne().skip(random);
+}
+
+export async function getOrCreateIngredient({ name, calories, proteines }) {
+  const ingredient = await IngredientReferentiel.findOne({ name });
+  if (!ingredient) {
+    const newIngredient = await getRandomIngredient();
+    if (!newIngredient) {
+      const ingredientCreate = new IngredientReferentiel({
+        name,
+        calories,
+        proteines,
+      });
+      await ingredientCreate.save();
+      return ingredientCreate;
+    }
+    return newIngredient;
+  }
+  return ingredient;
+}

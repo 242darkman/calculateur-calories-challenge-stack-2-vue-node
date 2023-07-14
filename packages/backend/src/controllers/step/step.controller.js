@@ -1,7 +1,23 @@
 import Step from '../../models/step/step.model.js';
 import get from 'lodash/get.js';
-import isUndefined from 'lodash/isUndefined.js';
 import isNull from 'lodash/isNull.js';
+import isUndefined from 'lodash/isUndefined.js';
+
+const stepTitles = [
+  'Préparer les ingrédients',
+  'Mélanger les ingrédients',
+  'Cuire le mélange',
+  'Laisser refroidir',
+  'Servir le plat',
+];
+
+const stepDescriptions = [
+  'Sortez tous les ingrédients nécessaires et préparez-les pour le processus de cuisson.',
+  'Mettez tous les ingrédients dans un grand bol et mélangez-les soigneusement.',
+  'Mettez le mélange sur le feu et faites cuire pendant 30 minutes.',
+  'Retirez le plat du feu et laissez-le refroidir un moment.',
+  "Servez le plat pendant qu'il est encore chaud.",
+];
 
 /**
  * récupération de l'ensemble des step
@@ -74,4 +90,29 @@ export async function deleteStep(req, res) {
   } catch (error) {
     return res.status(400).json({ error: error.toString() });
   }
+}
+
+export async function getRandomStep() {
+  const randomTitleIndex = Math.floor(Math.random() * stepTitles.length);
+  const randomDescriptionIndex = Math.floor(
+    Math.random() * stepDescriptions.length
+  );
+
+  const step = new Step({
+    title: stepTitles[randomTitleIndex],
+    description: stepDescriptions[randomDescriptionIndex],
+  });
+
+  await step.save();
+
+  return step;
+}
+
+export function formatSteps({ steps }) {
+  return steps.map((step) => {
+    return {
+      title: step.title,
+      description: step.description,
+    };
+  });
 }

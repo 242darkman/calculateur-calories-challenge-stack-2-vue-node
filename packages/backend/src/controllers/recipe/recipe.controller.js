@@ -1,7 +1,13 @@
+import { formatSteps, getRandomStep } from '../step/step.controller.js';
+
+import Ingredient from '../../models/ingredient/ingredient.model.js';
 import IngredientReferentiel from '../../models/ingredient/ingredientReferentiel.model.js';
 import Recipe from '../../models/recipe/recipe.model.js';
+import { createBotUser } from '../user/user.controller.js';
+import { formatIngredients } from '../ingredient/ingredient.controller.js';
 import fs from 'fs';
 import get from 'lodash/get.js';
+import { getOrCreateIngredient } from '../ingredient/ingredientReferentiel.controller.js';
 import isNull from 'lodash/isNull.js';
 import isUndefined from 'lodash/isUndefined.js';
 import os from 'os';
@@ -155,5 +161,49 @@ export async function exportSingleRecipeAsJson(req, res) {
     });
   } catch (error) {
     res.status(500).json({ error: error.toString() });
+  }
+}
+
+export async function generateRecipe(req, res) {
+  try {
+    const user = await createBotUser();
+
+    const steps = [];
+    for (let i = 0; i < 5; i++) {
+      const step = await getRandomStep();
+      steps.push(step);
+    }
+
+    const formattedSteps = formatSteps({ steps });
+
+    const ingredients = [];
+    for (let i = 0; i < 3; i++) {
+      const ingredientReferentiel = await getOrCreateIngredient({
+        name: 'ingredient' + i,
+        calories: Math.random() * 500,
+        proteines: Math.random() * 100,
+      });
+      const ingredient = new Ingredient({
+        ingredient: ingredientReferentiel._id,
+        quantity: Math.floor(Math.random() * 200) + 1,
+        unit: 'g',
+      });
+      await ingredient.save();
+      ingredients.push(ingredient);
+    }
+    const formattedIngredients = formatIngredients({ ingredients });
+
+    const recipe = new Recipe({
+      title: 'Random Recipe',
+      author: user._id,
+      ingredients: formattedIngredients,
+      steps: formattedSteps,
+    });
+
+    await recipe.save();
+    return res.status(200).send(recipe);
+  } catch (error) {
+    console.error('An error occurred while creating a random recipe:', error);
+    throw error;
   }
 }

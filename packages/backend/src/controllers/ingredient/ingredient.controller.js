@@ -1,7 +1,7 @@
 import Ingredient from '../../models/ingredient/ingredient.model.js';
 import get from 'lodash/get.js';
-import isUndefined from 'lodash/isUndefined.js';
 import isNull from 'lodash/isNull.js';
+import isUndefined from 'lodash/isUndefined.js';
 
 /**
  * récupération de l'ensemble des ingredients
@@ -74,4 +74,14 @@ export async function deleteIngredient(req, res) {
   } catch (error) {
     return res.status(400).json({ error: error.toString() });
   }
+}
+
+export function formatIngredients({ ingredients }) {
+  return ingredients.map((ingredient) => {
+    return {
+      ingredient: ingredient.ingredient,
+      quantity: ingredient.quantity,
+      unit: ingredient.unit,
+    };
+  });
 }
