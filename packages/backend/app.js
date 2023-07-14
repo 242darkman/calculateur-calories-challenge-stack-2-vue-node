@@ -1,4 +1,5 @@
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import loadRoutes from './src/utils/routes.loader.js';
@@ -16,12 +17,8 @@ var corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
-/**
- * @ express.json()
- * middleware qui parse automatiquement le corps des requêtes entrantes au format JSON.
- *  afin d'accéder à des objets JSON envoyés avec les requêtes via req.body dans vos gestionnaires de routes.
- */
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({

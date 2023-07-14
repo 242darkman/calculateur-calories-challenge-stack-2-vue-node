@@ -1,5 +1,6 @@
+import { deleteUser, getUser } from "src/stores/user/user.api.js";
+
 import { defineStore } from "pinia";
-import { deleteUser } from "src/stores/user/user.api.js";
 
 const getters = {};
 
@@ -9,7 +10,17 @@ const actions = {
       const data = await deleteUser({ id });
       return data;
     } catch (error) {
-      console.error("lors de la suppression de l'utilisateur :", error);
+      console.error("Erreur lors de la suppression de l'utilisateur :", error);
+      throw error;
+    }
+  },
+
+  async getUser({ id }) {
+    try {
+      const user = await getUser({ id });
+      return user;
+    } catch (error) {
+      console.error("Erreur lors de la récupération de l'utilisateur :", error);
       throw error;
     }
   },

@@ -140,8 +140,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `Mon template Quasar`,
-        short_name: `Mon template Quasar`,
+        name: `Calculateur de calories`,
+        short_name: `Calculateur de calories`,
         description: `A Quasar Framework app`,
         display: "standalone",
         orientation: "portrait",

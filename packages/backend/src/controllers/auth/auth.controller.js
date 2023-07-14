@@ -55,7 +55,7 @@ export async function login(req, res) {
       sameSite: true,
     });
 
-    return res.status(200).send({ auth: true });
+    return res.status(200).send({ auth: true, token });
   } catch (err) {
     return res.status(500).send('There was a problem logging in.');
   }
@@ -69,7 +69,7 @@ export async function me(req, res) {
   if (!token) {
     return res.status(401).send({ auth: false, message: 'No token provided.' });
   }
-
+  console.log('la valeur est : ' + req.headers);
   const accessToken = token.split('=')[1].trim();
 
   jwt.verify(accessToken, process.env.SECRET, async function (err, decoded) {

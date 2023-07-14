@@ -6,6 +6,7 @@ import {
   updateUser,
 } from '../../controllers/user/user.controller.js';
 
+import { authorize } from '../../guards/auth.guard.js';
 import { body } from 'express-validator';
 import express from 'express';
 
@@ -26,26 +27,42 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/User'
+ *                 type: object
+ *                 properties:
+ *                   userName:
+ *                     type: string
+ *                   firstName:
+ *                     type: string
+ *                   lastName:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *                   password:
+ *                     type: string
+ *                   arrivedAt:
+ *                     type: string
+ *                   roles:
+ *                     type: array
+ *                     items:
+ *                       type: string
  *       '400':
  *         description: Invalid request
  *       '404':
  *         description: User not found
  */
-router.get('/users', getUsers);
+router.get('/users', authorize, getUsers);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /api/user/{id}:
  *   get:
  *     tags:
  *      - User
- *     summary: Get a user by ID
+ *     summary: Get a specific user
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the user to retrieve
  *         schema:
  *           type: integer
  *     responses:
@@ -54,26 +71,42 @@ router.get('/users', getUsers);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               type: object
+ *               properties:
+ *                 userName:
+ *                   type: string
+ *                 firstName:
+ *                   type: string
+ *                 lastName:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 password:
+ *                   type: string
+ *                 arrivedAt:
+ *                   type: string
+ *                 roles:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *       '400':
  *         description: Invalid request
  *       '404':
  *         description: User not found
  */
-router.get('/users/:id', getUser);
+router.get('/user/:id', getUser);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /api/user/{id}:
  *   put:
  *     tags:
  *      - User
- *     summary: Update a user by ID
+ *     summary: Update a specific user
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the user to update
  *         schema:
  *           type: integer
  *     requestBody:
@@ -82,7 +115,18 @@ router.get('/users/:id', getUser);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UserInput'
+ *             type: object
+ *             properties:
+ *               userName:
+ *                 type: string
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
  *     responses:
  *       '200':
  *         description: User updated successfully
@@ -91,15 +135,15 @@ router.get('/users/:id', getUser);
  *       '404':
  *         description: User not found
  */
-router.put('/users/:id', updateUser);
+router.put('/user/:id', authorize, updateUser);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /api/user/{id}:
  *   delete:
  *     tags:
  *      - User
- *     summary: Delete a user by ID
+ *     summary: Delete a specific user
  *     parameters:
  *       - in: path
  *         name: id
@@ -115,21 +159,38 @@ router.put('/users/:id', updateUser);
  *       '404':
  *         description: User not found
  */
-router.delete('/users/:id', deleteUser);
+router.delete('/user/:id', authorize, deleteUser);
 
 /**
  * @swagger
- * /api/users:
+ * /api/user:
  *   post:
  *     tags:
- *      - User
+ *       - User
  *     summary: Create a new user
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UserInput'
+ *             type: object
+ *             required:
+ *               - userName
+ *               - firstName
+ *               - lastName
+ *               - email
+ *               - password
+ *             properties:
+ *               userName:
+ *                 type: string
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
  *     responses:
  *       '201':
  *         description: User created successfully
@@ -137,7 +198,7 @@ router.delete('/users/:id', deleteUser);
  *         description: Invalid request
  */
 router.post(
-  '/users',
+  '/user',
   [
     body('userName').notEmpty().withMessage('User name is required'),
     body('firstName').notEmpty().withMessage('First name is required'),

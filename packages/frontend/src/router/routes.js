@@ -9,6 +9,12 @@ const routes = [
         component: () => import("src/pages/home/HomePage.vue"),
       },
       {
+        path: "details-recipe/:id",
+        name: "details-recipe",
+        component: () => import("src/pages/recipes/DetailsRecipePage.vue"),
+        meta: { requiresAuth: true },
+      },
+      {
         path: "/profile",
         name: "profile",
         component: () => import("src/pages/user/UserProfile.vue"),
@@ -40,18 +46,32 @@ const routes = [
       },
       {
         path: "add-recipe",
-        component: () => import("src/pages/recipes/AddRecipePage.vue"),
+        component: () => import("src/pages/recipes/CreateRecipePage.vue"),
         meta: { requiresAuth: true },
       },
       {
-        path: "add-ingredient",
-        component: () => import("src/pages/AddIngredient.vue"),
+        path: "ingredient-referentiel",
+        name: "ingredientReferentiel",
+        component: () =>
+          import("src/pages/ingredientReferentiel/ingredientReferentiel.vue"),
+      },
+      {
+        path: "edit-referentiel/:id",
+        name: "editReferentiel",
+        component: () =>
+          import("src/pages/ingredientReferentiel/editReferentiel.vue"),
+          meta: { requiresAuth: true },
+      },
+      {
+        path: "create-referentiel",
+        name: "createReferentiel",
+        component: () =>
+          import("src/pages/ingredientReferentiel/createReferentiel.vue"),
+          meta: { requiresAuth: true },
       },
     ],
   },
 
-  // Always leave this as last one,
-  // but you can also remove it
   {
     path: "/:catchAll(.*)*",
     component: () => import("pages/Error404.vue"),
