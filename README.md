@@ -36,13 +36,13 @@ Cette application web propose d'analyser des recettes de cuisine. Elle fournit l
 
 ## Recettes
 
-- Ajouter une recette : `POST api/recipe`
-- Supprimer une recette : `DELETE api/recipe/{id}`
+- Ajouter une recette : `POST /api/recipe`
+- Supprimer une recette : `DELETE /api/recipe/{id}`
 - Lister les recettes : `GET api/recipes`
-- Afficher les détails d'une recette : `GET api/recipe/{id}`
-- Analyser une recette : `GET api/recipe/{id}/analyze`
-- Exporter la recette en JSON : `GET api/recipe/{id}/json`
-- Générer une recette : `GET api/recipe/generate`
+- Afficher les détails d'une recette : `GET /api/recipe/{id}`
+- Analyser une recette : `GET /api/recipe/{id}/analyze`
+- Exporter la recette en JSON : `GET /api/recipe/{id}/json`
+- Générer une recette : `GET /api/recipe/generate`
 - Mettre à jour une recette : `PUT /api/recipe/{id}`
 
 ## Référentiel d'ingrédients
